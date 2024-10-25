@@ -1,0 +1,10 @@
+#root {
+  max-width: 80%;
+  width: 100%;
+}
+
+@media (width <= 600px) {
+  #root {
+    max-width: 100%;
+  }
+}
