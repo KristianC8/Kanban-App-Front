@@ -9,7 +9,7 @@ function App() {
       <Header />
       <main className='min-h-screen-mh py-4'>
         <CreateProject />
-        <h2 className='text-xl font-bold text-[#f74c3c] mb-4'>MIS PORYECTOS</h2>
+        <h2 className='text-xl font-bold text-[#f74c3c] mb-4'>PORYECTOS</h2>
         <ProjectsContainer />
       </main>
     </>

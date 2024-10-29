@@ -18,6 +18,10 @@ export default {
           from: { opacity: 0 },
           to: { opacity: 1 }
         }
+      },
+      backgroundImage: {
+        'custom-gradient':
+          'linear-gradient(90deg, #0000 3%, #f74c3c 35%, #f74c3c 65%, #0000 97%)'
       }
     }
   },
