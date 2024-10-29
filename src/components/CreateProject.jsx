@@ -1,5 +1,7 @@
 import { useForm } from '../hooks/useForm'
-import { PopUp } from './PopUp'
+import { PopUpForm } from './PopUpForm'
+import { helpHTTP } from '../helpers/helpHTTP'
+import { useProjectsContext } from '../hooks/useProjectsContext'
 
 export const CreateProject = () => {
   const initialForm = {
@@ -28,20 +30,38 @@ export const CreateProject = () => {
   const {
     formstate,
     errors,
-    isLoading,
     initialValidation,
     onInputChange,
     handleBlur,
     handleKeyUp,
-    handleSubmit,
-    initForm
+    initForm,
+    initValidation
   } = useForm(initialForm, validateForm)
   const { nombreProyecto, descripciónProyecto } = formstate
+  const { getNewProjects } = useProjectsContext()
+
+  const handleSubmit = (e) => {
+    console.log(JSON.stringify(formstate))
+    e.preventDefault()
+    initForm()
+    helpHTTP()
+      .post('http://localhost:8080/kanban-app/proyectos', {
+        body: formstate
+      })
+      .then((res) => {
+        initValidation()
+        console.log(res)
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        getNewProjects()
+      })
+  }
 
   return (
     <>
-      <PopUp
-        title={'Creat Proyecto'}
+      <PopUpForm
+        title={'Crear Proyecto'}
         stylesBtn={
           'p-3 bg-gradient-to-r from-[#e42f1e] to-[#e74435] mb-4 rounded-md font-bold'
         }
@@ -49,6 +69,8 @@ export const CreateProject = () => {
         textBtn={'Crear'}
         handleSubmit={handleSubmit}
         functionClose={initForm}
+        initalValidation={initialValidation}
+        errors={errors}
       >
         <div className='flex flex-col gap-1'>
           <label className='' htmlFor='nombreProyecto'>
@@ -63,6 +85,7 @@ export const CreateProject = () => {
             onChange={onInputChange}
             onKeyUp={handleKeyUp}
             onBlur={handleBlur}
+            autoComplete='off'
           />
           {errors.nombreProyecto && (
             <span className='text-[#ff3445]'>{errors.nombreProyecto}</span>
@@ -85,7 +108,7 @@ export const CreateProject = () => {
             <span className='text-[#ff3445]'>{errors.descripciónProyecto}</span>
           )}
         </div>
-      </PopUp>
+      </PopUpForm>
     </>
   )
 }

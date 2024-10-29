@@ -1,32 +1,23 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react'
+import { usePopUp } from '../hooks/usePopUp'
 
-export const PopUp = ({
+export const PopUpForm = ({
   children,
   stylesBtn,
   title,
   OpenBtn,
   textBtn,
   handleSubmit,
-  functionClose
+  functionClose,
+  initalValidation,
+  errors
 }) => {
-  const [isVisible, setIsVisible] = useState(false)
+  const { isVisible, handleBtnOpen, handleBtnCancel, handleClosePopup } =
+    usePopUp(functionClose)
 
-  const handleOpenBtn = () => {
-    setIsVisible(!isVisible)
-  }
-
-  const handleCancelBtn = () => {
-    setIsVisible(false)
-    functionClose()
-  }
-
-  const handleClosePopup = () => {
-    setIsVisible(false)
-  }
   return (
     <>
-      <button className={stylesBtn} onClick={handleOpenBtn}>
+      <button className={stylesBtn} onClick={handleBtnOpen}>
         {OpenBtn}
       </button>
       <article
@@ -43,14 +34,17 @@ export const PopUp = ({
               <button
                 type='button'
                 className='px-4 py-2 bg-primary rounded '
-                onClick={handleCancelBtn}
+                onClick={handleBtnCancel}
               >
                 Cancelar
               </button>
               <button
                 type='submit'
-                className='px-4 py-2 bg-primary rounded'
+                className='px-4 py-2 bg-primary rounded bg-[#e42f1e] disabled:bg-[#5b130c]'
                 onClick={handleClosePopup}
+                disabled={
+                  initalValidation === false || Object.keys(errors).length !== 0
+                }
               >
                 {textBtn}
               </button>
