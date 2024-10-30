@@ -5,7 +5,7 @@ export const ProjectsContext = createContext()
 
 // eslint-disable-next-line react/prop-types
 export const ProjectsProvider = ({ children }) => {
-  const [projects, setProjects] = useState([])
+  const [projects, setProjects] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const getNewProjects = async () => {
@@ -14,6 +14,7 @@ export const ProjectsProvider = ({ children }) => {
       const data = await helpHTTP().get(
         'http://localhost:8080/kanban-app/proyectos'
       )
+      if (data.includes('Error')) throw data
       setProjects(data)
     } catch (error) {
       console.log(error)

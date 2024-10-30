@@ -1,13 +1,17 @@
 import React from 'react'
+import { useState } from 'react'
 import { DeleteIcon } from './icons/DeleteIcon'
 import { GetInIcon } from './icons/GetInIcon'
 import { helpHTTP } from '../helpers/helpHTTP'
 import { useProjectsContext } from '../hooks/useProjectsContext'
 import { UpdateProject } from './UpdateProject'
+import { PopUpConfirm } from './PopUpConfirm'
+import { Link } from 'react-router-dom'
 
 // eslint-disable-next-line react/prop-types
 export const ProjectCard = ({ title, description, id }) => {
   const { getNewProjects } = useProjectsContext()
+  const [isVisible, setIsVisible] = useState(false)
 
   const handleDelete = () => {
     const deleteEndPoint = `http://localhost:8080/kanban-app/proyectos/${id}`
@@ -15,7 +19,12 @@ export const ProjectCard = ({ title, description, id }) => {
       .del(deleteEndPoint)
       .then(() => {
         getNewProjects()
+        setIsVisible(false)
       })
+  }
+
+  const handleBtnCancel = () => {
+    setIsVisible(false)
   }
 
   return (
@@ -25,14 +34,29 @@ export const ProjectCard = ({ title, description, id }) => {
       <h5 className='text-base font-semibold text-[#989898]'>Descripción:</h5>
       <p>{description}</p>
       <div className='flex justify-between'>
-        <button className='flex items-center gap-2 bg-[#f74c3c] p-1 rounded-md'>
+        <Link
+          to={`/projects/${id}`}
+          className='flex items-center gap-2 bg-[#f74c3c] p-1 rounded-md'
+        >
           Ver <GetInIcon />
-        </button>
+        </Link>
         <div className='flex gap-2'>
           <UpdateProject title={title} description={description} id={id} />
-          <button aria-label='Borrar Proyecto' onClick={handleDelete}>
+          <button
+            aria-label='Borrar Proyecto'
+            onClick={() => {
+              setIsVisible(true)
+            }}
+          >
             <DeleteIcon />
           </button>
+          <PopUpConfirm
+            isVisible={isVisible}
+            title={'Confirmación'}
+            text={'Está seguro de eliminar el proyecto?'}
+            handleBtnCancel={handleBtnCancel}
+            handleDelete={handleDelete}
+          />
         </div>
       </div>
     </article>

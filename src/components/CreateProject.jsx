@@ -77,7 +77,7 @@ export const CreateProject = () => {
             Nombre del Proyecto:
           </label>
           <input
-            className='rounded-md px-2 py-1 bg-slate-300 text-zinc-800'
+            className='rounded-md px-2 py-1 bg-slate-300 text-zinc-800 h-fit'
             type='text'
             name='nombreProyecto'
             id='nombreProyecto'
@@ -86,6 +86,7 @@ export const CreateProject = () => {
             onKeyUp={handleKeyUp}
             onBlur={handleBlur}
             autoComplete='off'
+            maxLength={'40'}
           />
           {errors.nombreProyecto && (
             <span className='text-[#ff3445]'>{errors.nombreProyecto}</span>
@@ -96,13 +97,14 @@ export const CreateProject = () => {
             Descripción:
           </label>
           <textarea
-            className='rounded-md px-2 py-1 bg-slate-300 text-zinc-800 resize-none'
+            className='rounded-md px-2 py-1 bg-slate-300 text-zinc-800 resize-none h-fit'
             name='descripciónProyecto'
             id='descripciónProyecto'
             value={descripciónProyecto}
             onChange={onInputChange}
             onKeyUp={handleKeyUp}
             onBlur={handleBlur}
+            maxLength={'70'}
           />
           {errors.descripciónProyecto && (
             <span className='text-[#ff3445]'>{errors.descripciónProyecto}</span>

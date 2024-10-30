@@ -1,4 +1,3 @@
-import './App.css'
 import { CreateProject } from './components/CreateProject'
 import { Header } from './components/Header'
 import { ProjectsContainer } from './components/ProjectsContainer'
