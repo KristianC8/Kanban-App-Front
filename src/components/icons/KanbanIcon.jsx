@@ -46,7 +46,7 @@ export const KanbanIcon = () => {
             <g
               id='equalizing-bars'
               transform='translate(36.500000, 36.500000) rotate(-180.000000) translate(-36.500000, -36.500000) translate(13.000000, 15.000000)'
-              fill='#e42f1e'
+              fill='#cd2626'
               fillRule='nonzero'
             >
               {' '}

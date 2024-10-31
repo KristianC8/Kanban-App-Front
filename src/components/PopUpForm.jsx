@@ -27,7 +27,9 @@ export const PopUpForm = ({
           className='relative w-4/5 md:w-96 animate-fade p-10 shadow-lg
         flex flex-col gap-4 rounded-md bg-[#212121]'
         >
-          <h3 className='self-center text-[#e42f1e]'>{title}</h3>
+          <h3 className='self-center text-[var(--principal-color)] text-xl font-bold'>
+            {title}
+          </h3>
           <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
             {children}
             <div className='flex gap-4 justify-center'>
@@ -40,7 +42,7 @@ export const PopUpForm = ({
               </button>
               <button
                 type='submit'
-                className='px-4 py-2 bg-primary rounded bg-[#e42f1e] disabled:bg-[#5b130c]'
+                className='px-4 py-2 bg-primary rounded bg-[var(--principal-color)] disabled:bg-[#420b0b]'
                 onClick={handleClosePopup}
                 disabled={
                   initalValidation === false || Object.keys(errors).length !== 0

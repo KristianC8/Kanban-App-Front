@@ -63,7 +63,7 @@ export const CreateProject = () => {
       <PopUpForm
         title={'Crear Proyecto'}
         stylesBtn={
-          'p-3 bg-gradient-to-r from-[#e42f1e] to-[#e74435] mb-4 rounded-md font-bold'
+          'p-3 bg-gradient-to-r from-[var(--principal-color)] to-[#e03c3c] mb-4 rounded-md font-bold'
         }
         OpenBtn={'Crear Proyecto'}
         textBtn={'Crear'}

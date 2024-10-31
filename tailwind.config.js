@@ -4,7 +4,8 @@ export default {
   theme: {
     extend: {
       minHeight: {
-        'screen-mh': 'calc(100vh - 3rem)'
+        'screen-mh': 'calc(100vh - 3rem)',
+        'screen-mh-kanban': 'calc(100vh - 7.75rem)'
         // 'screen-dvh-mobile': 'calc(100dvh - 4rem)'
       },
       fontSize: {
@@ -21,7 +22,7 @@ export default {
       },
       backgroundImage: {
         'custom-gradient':
-          'linear-gradient(90deg, #0000 3%, #f74c3c 35%, #f74c3c 65%, #0000 97%)'
+          'linear-gradient(90deg, #0000 3%, var(--principal-color) 35%, var(--principal-color) 65%, #0000 97%)'
       }
     }
   },

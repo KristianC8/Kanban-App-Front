@@ -7,7 +7,7 @@ export const KanbanAppLayout = () => {
     <>
       <Header />
       <ProjectsProvider>
-        <main className='min-h-screen-mh py-4'>
+        <main className='min-h-screen-mh py-4 mt-12'>
           <Outlet />
         </main>
       </ProjectsProvider>

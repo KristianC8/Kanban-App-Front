@@ -16,7 +16,7 @@ export const PopUpConfirm = ({
         className='relative w-4/5 md:w-96 animate-fade p-10 shadow-lg
         flex flex-col gap-4 rounded-md bg-[#212121]'
       >
-        <h3 className='self-center text-xl text-[#e42f1e] font-bold'>
+        <h3 className='self-center text-xl text-[var(--principal-color)] font-bold'>
           {title}
         </h3>
         <p className='text-center'>{text}</p>
@@ -30,7 +30,7 @@ export const PopUpConfirm = ({
           </button>
           <button
             type='button'
-            className='px-4 py-2 bg-primary rounded bg-[#e42f1e] disabled:bg-[#5b130c]'
+            className='px-4 py-2 bg-primary rounded bg-[var(--principal-color)] disabled:bg-[#420b0b]'
             onClick={handleDelete}
           >
             Aceptar

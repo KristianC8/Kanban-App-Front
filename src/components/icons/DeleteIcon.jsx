@@ -10,7 +10,7 @@ export const DeleteIcon = () => {
       strokeWidth='2'
       strokeLinecap='round'
       strokeLinejoin='round'
-      className='hover:stroke-[#f74c3c] duration-500 transition-all'
+      className='hover:stroke-[var(--principal-color)] duration-500 transition-all'
     >
       <path stroke='none' d='M0 0h24v24H0z' fill='none' />
       <path d='M4 7l16 0' />

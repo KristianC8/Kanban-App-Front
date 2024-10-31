@@ -11,6 +11,7 @@
   -moz-osx-font-smoothing: grayscale;
 
   --width-card: calc((100% - 20% - 24px) / 3);
+  --principal-color: #dc2626;
 }
 
 body {
@@ -28,9 +29,9 @@ body {
   width: 100%;
 }
 
-@media (width <= 600px) {
+@media (width <= 640px) {
   #root {
-    max-width: 100%;
+    max-width: 95%;
   }
 }
 

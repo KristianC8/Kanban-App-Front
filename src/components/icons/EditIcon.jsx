@@ -10,7 +10,7 @@ export const EditIcon = () => {
       strokeWidth='2'
       strokeLinecap='round'
       strokeLinejoin='round'
-      className='hover:stroke-[#f74c3c] duration-500 transition-all'
+      className='hover:stroke-[var(--principal-color)] duration-500 transition-all'
     >
       <path stroke='none' d='M0 0h24v24H0z' fill='none' />
       <path d='M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1' />
