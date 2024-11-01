@@ -73,14 +73,15 @@ export const CreateProject = () => {
         errors={errors}
       >
         <div className='flex flex-col gap-1'>
-          <label className='' htmlFor='nombreProyecto'>
+          <label className='text-sm translate-y-2' htmlFor='nombreProyecto'>
             Nombre del Proyecto:
           </label>
           <input
-            className='rounded-md px-2 py-1 bg-slate-300 text-zinc-800 h-fit'
+            className='text-[#c1c1c1] px-2 py-1 bg-[#212121] outline-none border-b border-[#303030] focus:border-[var(--principal-color)] h-fit'
             type='text'
             name='nombreProyecto'
             id='nombreProyecto'
+            placeholder='Cual es tu Proyecto?'
             value={nombreProyecto}
             onChange={onInputChange}
             onKeyUp={handleKeyUp}
@@ -93,13 +94,17 @@ export const CreateProject = () => {
           )}
         </div>
         <div className='flex flex-col gap-1'>
-          <label className='' htmlFor='descripciónProyecto'>
+          <label
+            className='text-sm translate-y-2'
+            htmlFor='descripciónProyecto'
+          >
             Descripción:
           </label>
           <textarea
-            className='rounded-md px-2 py-1 bg-slate-300 text-zinc-800 resize-none h-fit'
+            className='text-[#c1c1c1] px-2 py-1 bg-[#212121] outline-none border-b border-[#303030] focus:border-[var(--principal-color)] resize-none h-fit'
             name='descripciónProyecto'
             id='descripciónProyecto'
+            placeholder='Describe tu proyecto de forma breve'
             value={descripciónProyecto}
             onChange={onInputChange}
             onKeyUp={handleKeyUp}

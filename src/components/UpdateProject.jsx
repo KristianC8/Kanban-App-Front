@@ -73,11 +73,11 @@ export const UpdateProject = ({ title, description, id }) => {
       errors={errors}
     >
       <div className='flex flex-col gap-1'>
-        <label className='' htmlFor='nombreProyecto'>
+        <label className='text-sm translate-y-2' htmlFor='nombreProyecto'>
           Nombre del Proyecto:
         </label>
         <input
-          className='rounded-md px-2 py-1 bg-slate-300 text-zinc-800'
+          className='text-[#c1c1c1]  px-2 py-1 bg-[#212121] outline-none border-b border-[#303030] focus:border-[var(--principal-color)]'
           type='text'
           name='nombreProyecto'
           id='nombreProyecto'
@@ -92,11 +92,11 @@ export const UpdateProject = ({ title, description, id }) => {
         )}
       </div>
       <div className='flex flex-col gap-1'>
-        <label className='' htmlFor='descripciónProyecto'>
+        <label className='text-sm translate-y-2' htmlFor='descripciónProyecto'>
           Descripción:
         </label>
         <textarea
-          className='rounded-md px-2 py-1 bg-slate-300 text-zinc-800 resize-none'
+          className='text-[#c1c1c1]  px-2 py-1 bg-[#212121] outline-none border-b border-[#303030] focus:border-[var(--principal-color)] resize-none'
           name='descripciónProyecto'
           id='descripciónProyecto'
           value={descripciónProyecto}

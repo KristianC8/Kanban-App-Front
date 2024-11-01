@@ -7,7 +7,6 @@ export const ProjectsContainer = () => {
 
   useEffect(() => {
     getNewProjects()
-    console.log(projects)
   }, [])
 
   return (
