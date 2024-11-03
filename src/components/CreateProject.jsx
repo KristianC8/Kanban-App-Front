@@ -1,6 +1,5 @@
 import { useForm } from '../hooks/useForm'
 import { PopUpForm } from './PopUpForm'
-import { helpHTTP } from '../helpers/helpHTTP'
 import { useProjectsContext } from '../hooks/useProjectsContext'
 
 export const CreateProject = () => {
@@ -38,24 +37,16 @@ export const CreateProject = () => {
     initValidation
   } = useForm(initialForm, validateForm)
   const { nombreProyecto, descripciónProyecto } = formstate
-  const { getNewProjects } = useProjectsContext()
+  const { addProject } = useProjectsContext()
+  const endPointCreate = 'http://localhost:8080/kanban-app/proyectos'
 
   const handleSubmit = (e) => {
     console.log(JSON.stringify(formstate))
     e.preventDefault()
     initForm()
-    helpHTTP()
-      .post('http://localhost:8080/kanban-app/proyectos', {
-        body: formstate
-      })
-      .then((res) => {
-        initValidation()
-        console.log(res)
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        getNewProjects()
-      })
+    addProject(endPointCreate, formstate).then(() => {
+      initValidation()
+    })
   }
 
   return (

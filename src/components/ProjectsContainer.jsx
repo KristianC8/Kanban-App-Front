@@ -3,10 +3,10 @@ import { ProjectCard } from './ProjectCard'
 import { useProjectsContext } from '../hooks/useProjectsContext'
 
 export const ProjectsContainer = () => {
-  const { projects, isLoading, getNewProjects } = useProjectsContext()
+  const { projects, isLoading, getProjects } = useProjectsContext()
 
   useEffect(() => {
-    getNewProjects()
+    getProjects()
   }, [])
 
   return (

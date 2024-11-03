@@ -8,7 +8,7 @@ export const ProjectsProvider = ({ children }) => {
   const [projects, setProjects] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const getNewProjects = async () => {
+  const getProjects = async () => {
     setIsLoading(true)
     try {
       const data = await helpHTTP().get(
@@ -23,8 +23,22 @@ export const ProjectsProvider = ({ children }) => {
     }
   }
 
+  const addProject = async (endPoint, form) => {
+    helpHTTP()
+      .post(endPoint, {
+        body: form
+      })
+      .then((res) => {
+        if (JSON.stringify(res).includes('Error')) throw res
+        setProjects((prevProjects) => [...prevProjects, res])
+      })
+      .catch((err) => console.log(err))
+  }
+
   return (
-    <ProjectsContext.Provider value={{ projects, isLoading, getNewProjects }}>
+    <ProjectsContext.Provider
+      value={{ projects, isLoading, getProjects, addProject }}
+    >
       {children}
     </ProjectsContext.Provider>
   )
