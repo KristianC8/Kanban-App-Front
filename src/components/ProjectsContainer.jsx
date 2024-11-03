@@ -10,7 +10,7 @@ export const ProjectsContainer = () => {
   }, [])
 
   return (
-    <div className='projects-container sm:grid sm:grid-cols-[repeat(2,minmax(200px,_1fr))]  lg:grid-cols-[repeat(auto-fill,minmax(var(--width-card),_1fr))] gap-x-6 gap-y-4'>
+    <div className='projects-container flex flex-col gap-4 sm:grid sm:grid-cols-[repeat(2,minmax(200px,_1fr))]  lg:grid-cols-[repeat(auto-fill,minmax(var(--width-card),_1fr))] gap-x-6 gap-y-4'>
       {isLoading ? (
         <p>cargando...</p>
       ) : projects === null ? (

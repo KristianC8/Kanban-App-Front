@@ -1,33 +1,25 @@
 import React from 'react'
-import { useState } from 'react'
+// import { useState } from 'react'
 import { DeleteIcon } from './icons/DeleteIcon'
 import { GetInIcon } from './icons/GetInIcon'
-import { helpHTTP } from '../helpers/helpHTTP'
+// import { helpHTTP } from '../helpers/helpHTTP'
 import { useProjectsContext } from '../hooks/useProjectsContext'
 import { UpdateProject } from './UpdateProject'
 import { PopUpConfirm } from './PopUpConfirm'
 // import { Link } from 'react-router-dom'
 import { useTasksContext } from '../hooks/useTasksContext'
 import { useNavigate } from 'react-router-dom'
+import { useDelete } from '../hooks/useDelete'
 
 // eslint-disable-next-line react/prop-types
 export const ProjectCard = ({ title, description, id }) => {
   const { getNewProjects } = useProjectsContext()
-  const [isVisible, setIsVisible] = useState(false)
 
-  const handleDelete = () => {
-    const deleteEndPoint = `http://localhost:8080/kanban-app/proyectos/${id}`
-    helpHTTP()
-      .del(deleteEndPoint)
-      .then(() => {
-        getNewProjects()
-        setIsVisible(false)
-      })
-  }
-
-  const handleBtnCancel = () => {
-    setIsVisible(false)
-  }
+  const deleteEndPoint = `http://localhost:8080/kanban-app/proyectos/${id}`
+  const { isVisible, handleDelete, handleOpen, handleClose } = useDelete(
+    deleteEndPoint,
+    getNewProjects
+  )
 
   const { getProject } = useTasksContext()
   const navigate = useNavigate()
@@ -38,11 +30,15 @@ export const ProjectCard = ({ title, description, id }) => {
   }
 
   return (
-    <article className='w-full p-4 flex flex-col gap-2 rounded-md bg-[#1a1a1a] hover:shadow-md hover:shadow-[var(--principal-color)] transition-all duration-500 '>
-      <h2 className='text-xl font-semibold'>{title}</h2>
-      <div className='bg-custom-gradient h-[1px] my-2'></div>
-      <h5 className='text-base font-semibold text-[#989898]'>Descripción:</h5>
-      <p>{description}</p>
+    <article className='w-full p-4 flex flex-col justify-between gap-2 rounded-md bg-[#1a1a1a] hover:shadow-md hover:shadow-[var(--principal-color)] transition-all duration-500 '>
+      <div>
+        <h2 className='text-xl font-semibold'>{title}</h2>
+        <div className='bg-custom-gradient h-[1px] my-2'></div>
+      </div>
+      <div>
+        <h5 className='text-base font-semibold text-[#989898]'>Descripción:</h5>
+        <p>{description}</p>
+      </div>
       <div className='flex justify-between'>
         {/* <Link
           to={`/projects/${id}`}
@@ -60,19 +56,14 @@ export const ProjectCard = ({ title, description, id }) => {
         </button>
         <div className='flex gap-2'>
           <UpdateProject title={title} description={description} id={id} />
-          <button
-            aria-label='Borrar Proyecto'
-            onClick={() => {
-              setIsVisible(true)
-            }}
-          >
+          <button aria-label='Borrar Proyecto' onClick={handleOpen}>
             <DeleteIcon />
           </button>
           <PopUpConfirm
             isVisible={isVisible}
             title={'Confirmar'}
             text={'¿Está seguro de eliminar el proyecto?'}
-            handleBtnCancel={handleBtnCancel}
+            handleBtnCancel={handleClose}
             handleDelete={handleDelete}
           />
         </div>

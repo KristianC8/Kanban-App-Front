@@ -10,7 +10,7 @@ export const CreateTask = () => {
     titulo: '',
     descripcion: '',
     estado: 'todo',
-    prioridad: 'baja',
+    prioridad: 'low',
     fechaPendiente: getMinActualDate(),
     proyectoId: project.id
   }
@@ -34,7 +34,7 @@ export const CreateTask = () => {
     }
 
     if (!form.descripcion.trim()) {
-      errors.descripcion = 'Se requiere una corta descripción'
+      errors.descripcion = 'Se requiere una descripción'
     }
     return errors
   }
@@ -71,7 +71,7 @@ export const CreateTask = () => {
     <PopUpForm
       title={'Crear Tarea'}
       stylesBtn={
-        'p-3 bg-gradient-to-r from-[var(--principal-color)] to-[#e03c3c] mb-4 rounded-md font-bold'
+        'p-3 bg-gradient-to-r from-[var(--principal-color)] to-[#e03c3c] my-4 rounded-md font-bold'
       }
       OpenBtn={'Crear Tarea'}
       textBtn={'Crear'}
@@ -176,6 +176,12 @@ export const CreateTask = () => {
           onKeyUp={handleKeyUp}
           value={fechaPendiente}
         />
+      </div>
+      <div>
+        <span className='text-sm translate-y-2 text-[#A2A2A2]'>Proyecto: </span>
+        <span className=' text-[.75rem] text-[#A2A2A2]'>
+          {project.nombreProyecto.toUpperCase()}
+        </span>
       </div>
     </PopUpForm>
   )
