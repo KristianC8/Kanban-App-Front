@@ -6,10 +6,23 @@ export const useForm = (intialForm = {}, validateForm) => {
   const [initialValidation, setInitialValidation] = useState(false)
 
   const onInputChange = (e) => {
-    const { name, value } = e.target
+    setInitialValidation(true)
+    const { name, value, type } = e.target
+
+    let adjustedValue = value
+
+    if (type === 'date' && value) {
+      const fechaSeleccionada = new Date(e.target.value)
+      const dia = String(fechaSeleccionada.getUTCDate()).padStart(2, '0')
+      const mes = String(fechaSeleccionada.getMonth() + 1).padStart(2, '0')
+      const año = String(fechaSeleccionada.getFullYear())
+      adjustedValue = `${año}-${mes}-${dia}`
+      console.log(dia)
+    }
+
     setFormstate({
       ...formstate,
-      [name]: value
+      [name]: adjustedValue
     })
   }
 

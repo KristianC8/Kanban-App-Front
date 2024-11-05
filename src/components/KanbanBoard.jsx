@@ -1,16 +1,22 @@
 import { CreateTask } from './CreateTask'
 import { useTasksContext } from '../hooks/useTasksContext'
 import { TaskCard } from './TaskCard'
+import { useEffect } from 'react'
 
 export const KanbanBoard = () => {
-  const { project } = useTasksContext()
+  const { project, scrollPosRef } = useTasksContext()
+
+  useEffect(() => {
+    // Restablecer la posición del scroll después de actualizar el estado
+    window.scrollTo(0, scrollPosRef.current)
+  }, [project])
+
   return (
     <div className='Kanban-container w-full grid grid-cols-3 sm:gap-4'>
       <div className='kanban-todo min-h-screen-mh-kanban border border-[#515151] rounded-md p-4'>
-        <h3 className='text-sm sm:text-xl font-bold text-center'>Por Hacer</h3>
-        <div className='w-full'>
-          <CreateTask />
-        </div>
+        <h3 className='text-sm sm:text-xl font-bold text-center mb-4'>
+          Por Hacer
+        </h3>
         {/* {project.tareas.length === 0 && (
           <span className='block px-2'>No hay Tareas</span>
         )} */}
@@ -23,16 +29,52 @@ export const KanbanBoard = () => {
                 id={tarea.id}
                 title={tarea.titulo}
                 description={tarea.descripcion}
+                state={tarea.estado}
+                priority={tarea.prioridad}
+                date={tarea.fechaPendiente}
+              />
+            ))}
+        <div className='w-full'>
+          <CreateTask />
+        </div>
+      </div>
+      <div className='kanban-inprogress min-h-screen-mh-kanban border border-[#515151] rounded-md p-4'>
+        <h3 className='text-sm sm:text-xl font-bold text-center mb-4'>
+          En Curso
+        </h3>
+        {project.tareas.length > 0 &&
+          project.tareas
+            .filter((tarea) => tarea.estado === 'inProgress')
+            .map((tarea) => (
+              <TaskCard
+                key={tarea.id}
+                id={tarea.id}
+                title={tarea.titulo}
+                description={tarea.descripcion}
+                state={tarea.estado}
                 priority={tarea.prioridad}
                 date={tarea.fechaPendiente}
               />
             ))}
       </div>
-      <div className='kanban-inprogress min-h-screen-mh-kanban border border-[#515151] rounded-md p-4'>
-        <h3 className='text-sm sm:text-xl font-bold text-center'>En Curso</h3>
-      </div>
       <div className='kanban-done min-h-screen-mh-kanban border border-[#515151] rounded-md p-4'>
-        <h3 className='text-sm sm:text-xl font-bold text-center'>Terminado</h3>
+        <h3 className='text-sm sm:text-xl font-bold text-center mb-4'>
+          Terminado
+        </h3>
+        {project.tareas.length > 0 &&
+          project.tareas
+            .filter((tarea) => tarea.estado === 'done')
+            .map((tarea) => (
+              <TaskCard
+                key={tarea.id}
+                id={tarea.id}
+                title={tarea.titulo}
+                description={tarea.descripcion}
+                state={tarea.estado}
+                priority={tarea.prioridad}
+                date={tarea.fechaPendiente}
+              />
+            ))}
       </div>
     </div>
   )

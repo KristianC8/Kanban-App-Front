@@ -3,7 +3,6 @@ import React from 'react'
 import { PopUpForm } from './PopUpForm'
 import { EditIcon } from './icons/EditIcon'
 import { useForm } from '../hooks/useForm'
-import { helpHTTP } from '../helpers/helpHTTP'
 import { useProjectsContext } from '../hooks/useProjectsContext'
 
 export const UpdateProject = ({ title, description, id }) => {
@@ -41,24 +40,13 @@ export const UpdateProject = ({ title, description, id }) => {
     initValidation
   } = useForm(initialForm, validateForm)
   const { nombreProyecto, descripciónProyecto } = formstate
-  const { getNewProjects } = useProjectsContext()
+  const { updateProject } = useProjectsContext()
 
   const handleSubmit = (e) => {
-    console.log(JSON.stringify(formstate))
+    const endPointUpdate = `http://localhost:8080/kanban-app/proyectos/${id}`
     e.preventDefault()
     initForm()
-    helpHTTP()
-      .put(`http://localhost:8080/kanban-app/proyectos/${id}`, {
-        body: formstate
-      })
-      .then((res) => {
-        initValidation()
-        console.log(res)
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        getNewProjects()
-      })
+    updateProject(endPointUpdate, formstate, id).then(() => initValidation())
   }
 
   return (

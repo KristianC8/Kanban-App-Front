@@ -24,6 +24,7 @@ export const ProjectsProvider = ({ children }) => {
   }
 
   const addProject = async (endPoint, form) => {
+    setIsLoading(true)
     helpHTTP()
       .post(endPoint, {
         body: form
@@ -33,11 +34,48 @@ export const ProjectsProvider = ({ children }) => {
         setProjects((prevProjects) => [...prevProjects, res])
       })
       .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false))
+  }
+
+  const updateProject = async (endPoint, form, id) => {
+    setIsLoading(true)
+    helpHTTP()
+      .put(endPoint, {
+        body: form
+      })
+      .then((res) => {
+        const ProjectIndex = projects.findIndex((item) => item.id === id)
+        const newProjects = structuredClone(projects)
+        newProjects[ProjectIndex] = res
+        setProjects(newProjects)
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false))
+  }
+
+  const deleteProject = async (endPoint, id) => {
+    setIsLoading(true)
+    helpHTTP()
+      .del(endPoint)
+      .then(() => {
+        setProjects((prevProjects) =>
+          prevProjects.filter((item) => item.id !== id)
+        )
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false))
   }
 
   return (
     <ProjectsContext.Provider
-      value={{ projects, isLoading, getProjects, addProject }}
+      value={{
+        projects,
+        isLoading,
+        getProjects,
+        addProject,
+        updateProject,
+        deleteProject
+      }}
     >
       {children}
     </ProjectsContext.Provider>

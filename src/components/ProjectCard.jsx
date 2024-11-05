@@ -9,17 +9,18 @@ import { PopUpConfirm } from './PopUpConfirm'
 // import { Link } from 'react-router-dom'
 import { useTasksContext } from '../hooks/useTasksContext'
 import { useNavigate } from 'react-router-dom'
-import { useDelete } from '../hooks/useDelete'
+import { useConfirm } from '../hooks/useConfirm'
 
 // eslint-disable-next-line react/prop-types
 export const ProjectCard = ({ title, description, id }) => {
-  const { getNewProjects } = useProjectsContext()
+  const { deleteProject } = useProjectsContext()
 
-  const deleteEndPoint = `http://localhost:8080/kanban-app/proyectos/${id}`
-  const { isVisible, handleDelete, handleOpen, handleClose } = useDelete(
-    deleteEndPoint,
-    getNewProjects
-  )
+  const { isVisible, handleOpen, handleClose } = useConfirm()
+
+  const handleDelete = () => {
+    const deleteEndPoint = `http://localhost:8080/kanban-app/proyectos/${id}`
+    deleteProject(deleteEndPoint, id).then(() => handleClose())
+  }
 
   const { getProject } = useTasksContext()
   const navigate = useNavigate()
@@ -30,7 +31,7 @@ export const ProjectCard = ({ title, description, id }) => {
   }
 
   return (
-    <article className='w-full p-4 flex flex-col justify-between gap-2 rounded-md bg-[#1a1a1a] hover:shadow-md hover:shadow-[var(--principal-color)] transition-all duration-500 '>
+    <article className='w-full p-4 flex flex-col justify-between gap-2 rounded-md bg-[#1a1a1a] hover:shadow-md hover:shadow-[var(--principal-color)] transition-all duration-500 animate-fade'>
       <div>
         <h2 className='text-xl font-semibold'>{title}</h2>
         <div className='bg-custom-gradient h-[1px] my-2'></div>

@@ -1,17 +1,25 @@
+/* eslint-disable react/prop-types */
 import { PopUpForm } from './PopUpForm'
 import { useForm } from '../hooks/useForm'
 import { useTasksContext } from '../hooks/useTasksContext'
+import { EditIcon } from './icons/EditIcon'
 
-export const CreateTask = () => {
-  const { project, addTask } = useTasksContext()
+export const UpdateTask = ({
+  id,
+  title,
+  description,
+  state,
+  priority,
+  date
+}) => {
+  const { project, updateTask } = useTasksContext()
 
   const initialForm = {
-    titulo: '',
-    descripcion: '',
-    estado: 'todo',
-    prioridad: 'low',
-    fechaPendiente: getMinActualDate(),
-    proyectoId: project.id
+    titulo: title,
+    descripcion: description,
+    estado: state,
+    prioridad: priority,
+    fechaPendiente: date
   }
 
   function getMinActualDate() {
@@ -52,22 +60,20 @@ export const CreateTask = () => {
 
   const handelSubmit = (e) => {
     // console.log(JSON.stringify(formstate))
-    const endpointAdd = `http://localhost:8080/kanban-app/tareas`
+    const endpointUpdate = `http://localhost:8080/kanban-app/tareas/${id}`
     e.preventDefault()
     initForm()
-    addTask(endpointAdd, formstate).then(() => {
+    updateTask(endpointUpdate, formstate, id).then(() => {
       initValidation()
     })
   }
 
   return (
     <PopUpForm
-      title={'Crear Tarea'}
-      stylesBtn={
-        'p-3 bg-gradient-to-r from-[var(--principal-color)] to-[#e03c3c] rounded-md font-bold'
-      }
-      OpenBtn={'Crear Tarea'}
-      textBtn={'Crear'}
+      title={'Editar Tarea'}
+      stylesBtn={''}
+      OpenBtn={<EditIcon />}
+      textBtn={'Editar'}
       errors={errors}
       initalValidation={initialValidation}
       functionClose={initForm}
@@ -128,12 +134,12 @@ export const CreateTask = () => {
             <option className=' appearance-none' value='todo'>
               Por Hacer
             </option>
-            {/* <option className=' appearance-none' value='inProgress'>
+            <option className=' appearance-none' value='inProgress'>
               En curso
             </option>
             <option className=' appearance-none' value='done'>
               Terminado
-            </option> */}
+            </option>
           </select>
         </div>
         <div className='flex flex-col gap-1'>
