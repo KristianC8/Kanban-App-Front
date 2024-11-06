@@ -37,7 +37,7 @@ export const TaskCard = ({ id, title, description, state, priority, date }) => {
   }
   const { isVisible, handleOpen, handleClose } = useConfirm()
 
-  const { handleDragStart, handleDragEnd } = useDragContext()
+  const { handleDragStart, handleDragEnd, handleMouseMove } = useDragContext()
 
   return (
     <article
@@ -45,6 +45,7 @@ export const TaskCard = ({ id, title, description, state, priority, date }) => {
       draggable
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      onMouseMove={handleMouseMove}
     >
       <h2 className='font-bold'>{title}</h2>
       <span className='text-sm translate-y-3 text-stone-400'>Descripción:</span>
