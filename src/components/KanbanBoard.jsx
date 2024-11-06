@@ -2,6 +2,7 @@ import { CreateTask } from './CreateTask'
 import { useTasksContext } from '../hooks/useTasksContext'
 import { TaskCard } from './TaskCard'
 import { useEffect } from 'react'
+import { useDragContext } from '../hooks/useDragContext'
 
 export const KanbanBoard = () => {
   const { project, scrollPosRef } = useTasksContext()
@@ -11,9 +12,16 @@ export const KanbanBoard = () => {
     window.scrollTo(0, scrollPosRef.current)
   }, [project])
 
+  const { handleDrop, handleDragOver, handleDragLeave } = useDragContext()
+
   return (
-    <div className='Kanban-container w-full grid grid-cols-3 sm:gap-4'>
-      <div className='kanban-todo min-h-screen-mh-kanban border border-[#515151] rounded-md p-4'>
+    <div className='Kanban-container w-full grid grid-cols-3 sm:gap-4 animate-fade'>
+      <div
+        className='kanban-todo min-h-screen-mh-kanban border border-[#515151] rounded-md p-4'
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+      >
         <h3 className='text-sm sm:text-xl font-bold text-center mb-4'>
           Por Hacer
         </h3>
@@ -38,7 +46,12 @@ export const KanbanBoard = () => {
           <CreateTask />
         </div>
       </div>
-      <div className='kanban-inprogress min-h-screen-mh-kanban border border-[#515151] rounded-md p-4'>
+      <div
+        className='kanban-inprogress min-h-screen-mh-kanban border border-[#515151] rounded-md p-4'
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+      >
         <h3 className='text-sm sm:text-xl font-bold text-center mb-4'>
           En Curso
         </h3>
@@ -57,7 +70,12 @@ export const KanbanBoard = () => {
               />
             ))}
       </div>
-      <div className='kanban-done min-h-screen-mh-kanban border border-[#515151] rounded-md p-4'>
+      <div
+        className='kanban-done min-h-screen-mh-kanban border border-[#515151] rounded-md p-4'
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+      >
         <h3 className='text-sm sm:text-xl font-bold text-center mb-4'>
           Terminado
         </h3>

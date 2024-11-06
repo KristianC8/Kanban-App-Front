@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { KanbanBoard } from '../components/KanbanBoard'
 import { useTasksContext } from '../hooks/useTasksContext'
 import { useParams } from 'react-router-dom'
+import { DragProvider } from '../context/dragContext'
 
 export const ProjectKanbanPage = () => {
   // const project = useLoaderData()
@@ -24,7 +25,9 @@ export const ProjectKanbanPage = () => {
           <h2 className='text-xl font-bold text-[var(--principal-color)] mb-4'>
             {project.nombreProyecto.toUpperCase()}
           </h2>
-          <KanbanBoard />
+          <DragProvider>
+            <KanbanBoard />
+          </DragProvider>
         </>
       )}
     </>

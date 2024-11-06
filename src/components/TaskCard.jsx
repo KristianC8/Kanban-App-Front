@@ -4,6 +4,7 @@ import { useConfirm } from '../hooks/useConfirm'
 import { useTasksContext } from '../hooks/useTasksContext'
 import { useState } from 'react'
 import { UpdateTask } from './UpdateTask'
+import { useDragContext } from '../hooks/useDragContext'
 
 /* eslint-disable react/prop-types */
 export const TaskCard = ({ id, title, description, state, priority, date }) => {
@@ -36,8 +37,15 @@ export const TaskCard = ({ id, title, description, state, priority, date }) => {
   }
   const { isVisible, handleOpen, handleClose } = useConfirm()
 
+  const { handleDragStart, handleDragEnd } = useDragContext()
+
   return (
-    <article className='bg-[#1a1a1a] p-4 mb-4 relative animate-fade'>
+    <article
+      className='bg-[#1a1a1a] p-4 mb-4 relative animate-fade'
+      draggable
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
       <h2 className='font-bold'>{title}</h2>
       <span className='text-sm translate-y-3 text-stone-400'>Descripción:</span>
       <p className='text-sm text-pretty'>{description}</p>
