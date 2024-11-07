@@ -34,16 +34,27 @@ export const DragProvider = ({ children }) => {
       sourceContainer.removeChild(draggedElementRef.current)
     }
 
-    if (draggedElementRef.current) {
-      currentTarget.appendChild(draggedElementRef.current)
-    }
-
     if (dragPreviewRef.current) dragPreviewRef.current.remove()
-    dragPreviewRef.current = null
+    // dragPreviewRef.current = null
+
+    if (e.target.classList.contains('columnBoard')) {
+      console.log('column')
+      if (draggedElementRef.current) {
+        currentTarget.appendChild(draggedElementRef.current)
+      }
+    } else if (e.target.classList.contains('cardTask')) {
+      if (draggedElementRef.current) {
+        currentTarget.insertAdjacentElement(
+          'afterend',
+          draggedElementRef.current
+        )
+      }
+    }
   }
 
   const handleDragOver = (e) => {
     e.preventDefault()
+    e.stopPropagation()
 
     const { currentTarget } = e
 
@@ -54,8 +65,19 @@ export const DragProvider = ({ children }) => {
       dragPreviewRef.current = draggedElementRef.current.cloneNode(true)
       dragPreviewRef.current.style.opacity = '0.6'
       dragPreviewRef.current.style.pointerEvents = 'none'
-      dragPreviewRef.id = 'drag-preview'
-      currentTarget.appendChild(dragPreviewRef.current)
+      console.log(currentTarget)
+      if (currentTarget.classList.contains('columnBoard')) {
+        if (draggedElementRef.current) {
+          currentTarget.appendChild(dragPreviewRef.current)
+        }
+      } else if (currentTarget.classList.contains('cardTask')) {
+        if (draggedElementRef.current) {
+          currentTarget.insertAdjacentElement(
+            'afterend',
+            dragPreviewRef.current
+          )
+        }
+      }
     }
   }
 
@@ -68,26 +90,26 @@ export const DragProvider = ({ children }) => {
     dragPreviewRef.current = null
   }
 
-  const elementRef = useRef(null)
-  const handleMouseMove = (e) => {
-    elementRef.current = e.target
-    if (elementRef.current) {
-      const rect = elementRef.current.getBoundingClientRect()
-      const mouseY = event.clientY - rect.top // posición Y del mouse dentro del elemento
-      const elementHeight = rect.height
+  // const elementRef = useRef(null)
+  // const handleMouseMove = (e) => {
+  //   elementRef.current = e.target
+  //   if (elementRef.current) {
+  //     const rect = elementRef.current.getBoundingClientRect()
+  //     const mouseY = e.clientY - rect.top // posición Y del mouse dentro del elemento
+  //     const elementHeight = rect.height
 
-      // Definir las zonas de proximidad (20% superior e inferior del elemento)
-      const proximityZone = elementHeight * 0.2 // 20% del alto del elemento
+  //     // Definir las zonas de proximidad (20% superior e inferior del elemento)
+  //     const proximityZone = elementHeight * 0.2 // 20% del alto del elemento
 
-      if (mouseY < proximityZone) {
-        console.log('El mouse está en la zona superior cercana al borde')
-      } else if (mouseY > elementHeight - proximityZone) {
-        console.log('El mouse está en la zona inferior cercana al borde')
-      } else {
-        console.log('El mouse está en la zona central')
-      }
-    }
-  }
+  //     if (mouseY < proximityZone) {
+  //       console.log('El mouse está en la zona superior cercana al borde')
+  //     } else if (mouseY > elementHeight - proximityZone) {
+  //       console.log('El mouse está en la zona inferior cercana al borde')
+  //     } else {
+  //       console.log('El mouse está en la zona central')
+  //     }
+  //   }
+  // }
 
   return (
     <DragContext.Provider
@@ -97,8 +119,7 @@ export const DragProvider = ({ children }) => {
         handleDragEnd,
         handleDrop,
         handleDragOver,
-        handleDragLeave,
-        handleMouseMove
+        handleDragLeave
       }}
     >
       {children}

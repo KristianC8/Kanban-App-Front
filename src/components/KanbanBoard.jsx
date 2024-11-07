@@ -17,7 +17,7 @@ export const KanbanBoard = () => {
   return (
     <div className='Kanban-container w-full grid grid-cols-3 sm:gap-4 animate-fade'>
       <div
-        className='kanban-todo min-h-screen-mh-kanban border border-[#515151] rounded-md p-4'
+        className='columnBoard kanban-todo min-h-screen-mh-kanban border border-[#515151] rounded-md p-4 transition-all duration-300'
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -47,7 +47,7 @@ export const KanbanBoard = () => {
         </div>
       </div>
       <div
-        className='kanban-inprogress min-h-screen-mh-kanban border border-[#515151] rounded-md p-4'
+        className='columnBoard kanban-inprogress min-h-screen-mh-kanban border border-[#515151] rounded-md p-4 transition-all duration-300'
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -71,7 +71,7 @@ export const KanbanBoard = () => {
             ))}
       </div>
       <div
-        className='kanban-done min-h-screen-mh-kanban border border-[#515151] rounded-md p-4'
+        className='columnBoard kanban-done min-h-screen-mh-kanban border border-[#515151] rounded-md p-4 transition-all duration-300'
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
