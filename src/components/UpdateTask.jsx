@@ -71,7 +71,7 @@ export const UpdateTask = ({
   return (
     <PopUpForm
       title={'Editar Tarea'}
-      stylesBtn={''}
+      stylesBtn={'z-10'}
       OpenBtn={<EditIcon />}
       textBtn={'Editar'}
       errors={errors}

@@ -42,50 +42,39 @@ export const TaskCard = ({ id, title, description, state, priority, date }) => {
 
   return (
     <article
-      className='cardTask cardTask bg-[#1a1a1a] p-4 mb-4 relative animate-fade'
+      className='cardTask bg-[#1a1a1a] p-4 mb-4 relative animate-fade transition-all duration-500'
       draggable
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
     >
-      <h2 className='cardTask font-bold'>{title}</h2>
-      <span className='cardTask text-sm translate-y-3 text-stone-400'>
+      <h2 className=' font-bold'>{title}</h2>
+      <span className=' text-sm translate-y-3 text-stone-400'>
         Descripción:
       </span>
-      <p className='cardTask text-sm text-pretty'>{description}</p>
-      <form className='cardTask flex md:gap-3 flex-wrap'>
-        <label className='cardTask text-sm text-stone-400' htmlFor='taskState'>
+      <p className=' text-sm text-pretty'>{description}</p>
+      <form className=' flex md:gap-3 flex-wrap'>
+        <label className=' text-sm text-stone-400' htmlFor='taskState'>
           Estado:
         </label>
         <select
-          className='cardTask bg-transparent text-sm'
+          className=' bg-transparent text-sm z-10'
           name='estado'
           id='taskState'
           defaultValue={stateTask}
           onChange={handleChangeSelect}
         >
-          <option
-            className='cardTask bg-[#1a1a1a] appearance-none'
-            value='todo'
-          >
+          <option className=' bg-[#1a1a1a] appearance-none' value='todo'>
             Por hacer
           </option>
-          <option
-            className='cardTask bg-[#1a1a1a] appearance-none'
-            value='inProgress'
-          >
+          <option className=' bg-[#1a1a1a] appearance-none' value='inProgress'>
             En curso
           </option>
-          <option
-            className='cardTask bg-[#1a1a1a] appearance-none'
-            value='done'
-          >
+          <option className=' bg-[#1a1a1a] appearance-none' value='done'>
             Terminado
           </option>
         </select>
       </form>
-      <span className='cardTask text-sm text-stone-400'>{date}</span>
+      <span className=' text-sm text-stone-400'>{date}</span>
       <div
         className={`${
           priority === 'low'
@@ -93,9 +82,9 @@ export const TaskCard = ({ id, title, description, state, priority, date }) => {
             : priority === 'medium'
               ? 'bg-[--medium-color]'
               : 'bg-[--high-color]'
-        } cardTask task-priority absolute w-2 top-0 bottom-0 left-0`}
+        }  task-priority absolute w-2 top-0 bottom-0 left-0`}
       ></div>
-      <div className='cardTask flex gap-2'>
+      <div className=' flex gap-2'>
         <UpdateTask
           id={id}
           title={title}
@@ -105,7 +94,7 @@ export const TaskCard = ({ id, title, description, state, priority, date }) => {
           date={date}
         />
         <button
-          className='cardTask '
+          className='z-10 '
           aria-label='Borrar Tarea'
           onClick={handleOpen}
         >
@@ -119,6 +108,18 @@ export const TaskCard = ({ id, title, description, state, priority, date }) => {
           handleDelete={handleDelete}
         />
       </div>
+      <div
+        // className='cardUp absolute top-0 left-0 right-0 h-1/2 bg-blue-400 '
+        className='cardUp absolute top-0 left-0 right-0 h-1/2 '
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+      ></div>
+      <div
+        // className='cardDown absolute bottom-0 left-0 right-0 h-1/2 bg-green-300 '
+        className='cardDown absolute bottom-0 left-0 right-0 h-1/2 '
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+      ></div>
     </article>
   )
 }

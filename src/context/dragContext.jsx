@@ -6,46 +6,38 @@ export const DragContext = createContext()
 export const DragProvider = ({ children }) => {
   const draggedElementRef = useRef(null)
   const dragPreviewRef = useRef(null)
-
-  let sourceContainer = null
+  const sourceContainer = useRef(null)
 
   const handleDragStart = (e) => {
-    // console.log('Drag Start', dragElement)
     draggedElementRef.current = e.target
-    sourceContainer = draggedElementRef.current.parentNode
-    console.log(dragPreviewRef)
-    // e.dataTransfer.setData('application/json', JSON.stringify(draggedElement))
-    // console.log(sourceContainer)
-  }
-  const handleDragEnd = () => {
-    // console.log('Drag End', e.target)
-    draggedElementRef.current = null
-    dragPreviewRef.current = null
-    sourceContainer = null
+    sourceContainer.current = draggedElementRef.current.parentNode
+    // e.dataTransfer.setData('application/x-moz-node', draggedElementRef.current)
+    e.effectAllowed = 'move'
   }
 
   const handleDrop = (e) => {
     e.preventDefault()
-    const { currentTarget } = e
-    // console.log('current', currentTarget)
-    // const element = dataTransfer.getData('json/application')
+    // const { currentTarget } = e
 
-    if (sourceContainer && draggedElementRef.current) {
-      sourceContainer.removeChild(draggedElementRef.current)
-    }
-
-    if (dragPreviewRef.current) dragPreviewRef.current.remove()
-    // dragPreviewRef.current = null
+    // if (sourceContainer.current && draggedElementRef.current) {
+    //   sourceContainer.current.removeChild(draggedElementRef.current)
+    // }
 
     if (e.target.classList.contains('columnBoard')) {
-      console.log('column')
       if (draggedElementRef.current) {
-        currentTarget.appendChild(draggedElementRef.current)
+        e.target.appendChild(draggedElementRef.current)
       }
-    } else if (e.target.classList.contains('cardTask')) {
+    } else if (e.target.classList.contains('cardDown')) {
       if (draggedElementRef.current) {
-        currentTarget.insertAdjacentElement(
+        e.target.parentNode.insertAdjacentElement(
           'afterend',
+          draggedElementRef.current
+        )
+      }
+    } else if (e.target.classList.contains('cardUp')) {
+      if (draggedElementRef.current) {
+        e.target.parentNode.insertAdjacentElement(
+          'beforebegin',
           draggedElementRef.current
         )
       }
@@ -58,21 +50,27 @@ export const DragProvider = ({ children }) => {
 
     const { currentTarget } = e
 
-    if (sourceContainer === currentTarget) return
+    if (sourceContainer.current === currentTarget) return
 
-    if (draggedElementRef.current && !dragPreviewRef.current) {
+    if (
+      draggedElementRef.current &&
+      !dragPreviewRef.current &&
+      currentTarget !== sourceContainer.current &&
+      !draggedElementRef.current.contains(currentTarget)
+    ) {
       // Clona el nodo y lo guarda en dragPreviewRef
       dragPreviewRef.current = draggedElementRef.current.cloneNode(true)
       dragPreviewRef.current.style.opacity = '0.6'
       dragPreviewRef.current.style.pointerEvents = 'none'
-      console.log(currentTarget)
+      dragPreviewRef.current.style.transition = 'transform 0.5s ease-in-out'
+
       if (currentTarget.classList.contains('columnBoard')) {
         if (draggedElementRef.current) {
           currentTarget.appendChild(dragPreviewRef.current)
         }
-      } else if (currentTarget.classList.contains('cardTask')) {
+      } else if (currentTarget.classList.contains('cardDown')) {
         if (draggedElementRef.current) {
-          currentTarget.insertAdjacentElement(
+          currentTarget.parentNode.insertAdjacentElement(
             'afterend',
             dragPreviewRef.current
           )
@@ -86,6 +84,13 @@ export const DragProvider = ({ children }) => {
 
     // const { currentTarget } = e
 
+    if (dragPreviewRef.current) dragPreviewRef.current.remove()
+    dragPreviewRef.current = null
+  }
+
+  const handleDragEnd = () => {
+    draggedElementRef.current = null
+    sourceContainer.current = null
     if (dragPreviewRef.current) dragPreviewRef.current.remove()
     dragPreviewRef.current = null
   }
