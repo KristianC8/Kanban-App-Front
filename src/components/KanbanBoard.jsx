@@ -25,7 +25,9 @@ export const KanbanBoard = () => {
         </div>
         <div
           className='columnBoard kanban-todo transition-all duration-300 min-h-screen-mh-kanban'
-          onDrop={handleDrop}
+          onDrop={(e) => {
+            handleDrop(e)
+          }}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
         >
@@ -50,7 +52,9 @@ export const KanbanBoard = () => {
       </div>
       <div
         className='columnBoard kanban-inprogress min-h-screen-mh-kanban border border-[#515151] rounded-md p-4 transition-all duration-300'
-        onDrop={handleDrop}
+        onDrop={(e) => {
+          handleDrop(e)
+        }}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
       >
@@ -74,7 +78,9 @@ export const KanbanBoard = () => {
       </div>
       <div
         className='columnBoard kanban-done min-h-screen-mh-kanban border border-[#515151] rounded-md p-4 transition-all duration-300'
-        onDrop={handleDrop}
+        onDrop={(e) => {
+          handleDrop(e)
+        }}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
       >

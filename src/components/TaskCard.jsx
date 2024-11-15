@@ -13,11 +13,7 @@ export const TaskCard = ({ id, title, description, state, priority, date }) => {
 
   const handleChangeSelect = (e) => {
     const form = {
-      titulo: title,
-      descripcion: description,
-      estado: e.target.value,
-      prioridad: priority,
-      fechaPendiente: date
+      estado: e.target.value
     }
     setStateTask(e.target.value)
     handleSubmit(e, form)
@@ -25,16 +21,15 @@ export const TaskCard = ({ id, title, description, state, priority, date }) => {
 
   const handleSubmit = (e, form) => {
     e.preventDefault()
-    const updateEndpoint = `http://localhost:8080/kanban-app/tareas/${id}`
-
-    console.log(form)
-    updateTask(updateEndpoint, form, id)
+    const updateStateEndpoint = `http://localhost:8080/kanban-app/estado/tareas/${id}`
+    updateTask(updateStateEndpoint, form, id)
   }
 
   const handleDelete = () => {
     const deleteEndPoint = `http://localhost:8080/kanban-app/tareas/${id}`
     deleteTask(deleteEndPoint, id).then(() => handleClose())
   }
+
   const { isVisible, handleOpen, handleClose } = useConfirm()
 
   const { handleDragStart, handleDragEnd, handleDrop, handleDragOver } =
@@ -46,6 +41,7 @@ export const TaskCard = ({ id, title, description, state, priority, date }) => {
       draggable
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      id={id}
     >
       <h2 className=' font-bold'>{title}</h2>
       <span className=' text-sm translate-y-3 text-stone-400'>
@@ -111,13 +107,17 @@ export const TaskCard = ({ id, title, description, state, priority, date }) => {
       <div
         // className='cardUp absolute top-0 left-0 right-0 h-1/2 bg-blue-400 '
         className='cardUp absolute top-0 left-0 right-0 h-1/2 '
-        onDrop={handleDrop}
+        onDrop={(e) => {
+          handleDrop(e)
+        }}
         onDragOver={handleDragOver}
       ></div>
       <div
         // className='cardDown absolute bottom-0 left-0 right-0 h-1/2 bg-green-300 '
         className='cardDown absolute bottom-0 left-0 right-0 h-1/2 '
-        onDrop={handleDrop}
+        onDrop={(e) => {
+          handleDrop(e)
+        }}
         onDragOver={handleDragOver}
       ></div>
     </article>

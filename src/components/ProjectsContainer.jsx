@@ -1,13 +1,20 @@
 import { useEffect } from 'react'
 import { ProjectCard } from './ProjectCard'
-import { useProjectsContext } from '../hooks/useProjectsContext'
+// import { useProjectsContext } from '../hooks/useProjectsContext'
+import { useProjectsStore } from '../store/projects'
 
 export const ProjectsContainer = () => {
-  const { projects, isLoading, getProjects } = useProjectsContext()
+  // const { projects, isLoading, getProjects } = useProjectsContext()
+  const projects = useProjectsStore((state) => state.projects)
+  const getProjects = useProjectsStore((state) => state.fetchProjects)
+  const isLoading = useProjectsStore((state) => state.loading)
 
   useEffect(() => {
+    // getProjects()
     getProjects()
   }, [])
+  console.log(projects)
+  console.log(projects)
 
   return (
     <div className='projects-container flex flex-col gap-4 sm:grid sm:grid-cols-[repeat(2,minmax(200px,_1fr))]  lg:grid-cols-[repeat(auto-fill,minmax(var(--width-card),_1fr))] gap-x-6 gap-y-4'>
@@ -16,7 +23,7 @@ export const ProjectsContainer = () => {
       ) : projects === null ? (
         <p>No fue posilbe acceder a la API</p>
       ) : projects.length === 0 ? (
-        <p>No hay productos</p>
+        <p>No hay proyectos</p>
       ) : (
         projects.map((project) => (
           <ProjectCard

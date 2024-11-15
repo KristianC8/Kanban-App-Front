@@ -44,22 +44,45 @@ export const TasksProvider = ({ children }) => {
       .finally(() => setIsLoading(false))
   }
 
+  // const updateTask = async (endPoint, form, id) => {
+  //   setIsLoading(true)
+  //   helpHTTP()
+  //     .put(endPoint, {
+  //       body: form
+  //     })
+  //     .then((res) => {
+  //       const projectTaskIndex = project.tareas.findIndex(
+  //         (item) => item.id === id
+  //       )
+  //       const newProject = structuredClone(project)
+  //       newProject.tareas[projectTaskIndex] = res
+  //       setProject(() => newProject)
+  //     })
+  //     .catch((err) => console.log(err))
+  //     .finally(() => setIsLoading(false))
+  // }
+
   const updateTask = async (endPoint, form, id) => {
+    const previousState = structuredClone(project)
+    // Actualización optimista del estado
+    const projectTaskIndex = project.tareas.findIndex((item) => item.id === id)
+    const newProject = structuredClone(project)
+    newProject.tareas[projectTaskIndex] = form // Actualización optimista con los datos locales
+
+    setProject(() => newProject)
+
     setIsLoading(true)
-    helpHTTP()
-      .put(endPoint, {
-        body: form
-      })
-      .then((res) => {
-        const projectTaskIndex = project.tareas.findIndex(
-          (item) => item.id === id
-        )
-        const newProject = structuredClone(project)
-        newProject.tareas[projectTaskIndex] = res
-        setProject(newProject)
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false))
+    try {
+      const res = await helpHTTP().put(endPoint, { body: form })
+      newProject.tareas[projectTaskIndex] = res // Actualización final con los datos de la API
+      setProject(() => newProject)
+    } catch (err) {
+      console.error(err)
+      // Opcional: revertir al estado anterior si hay un error
+      setProject(previousState)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const deleteTask = async (endPoint, id) => {

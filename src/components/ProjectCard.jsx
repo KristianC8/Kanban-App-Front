@@ -3,17 +3,19 @@ import React from 'react'
 import { DeleteIcon } from './icons/DeleteIcon'
 import { GetInIcon } from './icons/GetInIcon'
 // import { helpHTTP } from '../helpers/helpHTTP'
-import { useProjectsContext } from '../hooks/useProjectsContext'
+// import { useProjectsContext } from '../hooks/useProjectsContext'
 import { UpdateProject } from './UpdateProject'
 import { PopUpConfirm } from './PopUpConfirm'
 // import { Link } from 'react-router-dom'
 import { useTasksContext } from '../hooks/useTasksContext'
 import { useNavigate } from 'react-router-dom'
 import { useConfirm } from '../hooks/useConfirm'
+import { useProjectsStore } from '../store/projects'
 
 // eslint-disable-next-line react/prop-types
 export const ProjectCard = ({ title, description, id }) => {
-  const { deleteProject } = useProjectsContext()
+  // const { deleteProject } = useProjectsContext()
+  const deleteProject = useProjectsStore((state) => state.deleteProject)
 
   const { isVisible, handleOpen, handleClose } = useConfirm()
 
