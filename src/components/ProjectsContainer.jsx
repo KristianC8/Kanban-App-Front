@@ -10,11 +10,8 @@ export const ProjectsContainer = () => {
   const isLoading = useProjectsStore((state) => state.loading)
 
   useEffect(() => {
-    // getProjects()
     getProjects()
   }, [])
-  console.log(projects)
-  console.log(projects)
 
   return (
     <div className='projects-container flex flex-col gap-4 sm:grid sm:grid-cols-[repeat(2,minmax(200px,_1fr))]  lg:grid-cols-[repeat(auto-fill,minmax(var(--width-card),_1fr))] gap-x-6 gap-y-4'>

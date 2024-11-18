@@ -1,9 +1,11 @@
 import { PopUpForm } from './PopUpForm'
 import { useForm } from '../hooks/useForm'
-import { useTasksContext } from '../hooks/useTasksContext'
+import { useTasksStore } from '../store/tasks'
+// import { useTasksContext } from '../hooks/useTasksContext'
 
 export const CreateTask = () => {
-  const { project, addTask } = useTasksContext()
+  // const { project, addTask } = useTasksContext()
+  const { project } = useTasksStore()
 
   const initialForm = {
     titulo: '',

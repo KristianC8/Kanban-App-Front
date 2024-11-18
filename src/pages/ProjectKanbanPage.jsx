@@ -1,21 +1,26 @@
 // import { useLoaderData } from 'react-router-dom'
 import { useEffect } from 'react'
 import { KanbanBoard } from '../components/KanbanBoard'
-import { useTasksContext } from '../hooks/useTasksContext'
+// import { useTasksContext } from '../hooks/useTasksContext'
 import { useParams } from 'react-router-dom'
+import { useTasksStore } from '../store/tasks'
 
 export const ProjectKanbanPage = () => {
   // const project = useLoaderData()
-  const { project, getProject, isLoading } = useTasksContext()
+  const project = useTasksStore((state) => state.project)
+  const getProject = useTasksStore((state) => state.getProject)
+  const loading = useTasksStore((state) => state.loading)
+  const getTasks = useTasksStore((state) => state.getTasks)
   const { id } = useParams()
 
   useEffect(() => {
     getProject(id)
+    getTasks(id)
   }, [id])
 
   return (
     <>
-      {isLoading ? (
+      {loading ? (
         <p>cargando...</p>
       ) : project === null ? (
         <p>No fue posilbe acceder a la API</p>

@@ -7,10 +7,11 @@ import { GetInIcon } from './icons/GetInIcon'
 import { UpdateProject } from './UpdateProject'
 import { PopUpConfirm } from './PopUpConfirm'
 // import { Link } from 'react-router-dom'
-import { useTasksContext } from '../hooks/useTasksContext'
+// import { useTasksContext } from '../hooks/useTasksContext'
 import { useNavigate } from 'react-router-dom'
 import { useConfirm } from '../hooks/useConfirm'
 import { useProjectsStore } from '../store/projects'
+// import { useTasksStore } from '../store/tasks'
 
 // eslint-disable-next-line react/prop-types
 export const ProjectCard = ({ title, description, id }) => {
@@ -24,12 +25,12 @@ export const ProjectCard = ({ title, description, id }) => {
     deleteProject(deleteEndPoint, id).then(() => handleClose())
   }
 
-  const { getProject } = useTasksContext()
+  // const { getProject } = useTasksContext()
+  // const { getProject } = useTasksStore()
   const navigate = useNavigate()
 
   const cambiarPage = (id) => {
     navigate(`/projects/${id}`)
-    getProject(id)
   }
 
   return (

@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import { PopUpForm } from './PopUpForm'
 import { useForm } from '../hooks/useForm'
-import { useTasksContext } from '../hooks/useTasksContext'
+// import { useTasksContext } from '../hooks/useTasksContext'
 import { EditIcon } from './icons/EditIcon'
+import { useTasksStore } from '../store/tasks'
 
 export const UpdateTask = ({
   id,
@@ -12,7 +13,8 @@ export const UpdateTask = ({
   priority,
   date
 }) => {
-  const { project, updateTask } = useTasksContext()
+  // const { project, updateTask } = useTasksContext()
+  const { project } = useTasksStore()
 
   const initialForm = {
     titulo: title,
