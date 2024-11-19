@@ -5,7 +5,8 @@ import { useTasksStore } from '../store/tasks'
 
 export const CreateTask = () => {
   // const { project, addTask } = useTasksContext()
-  const { project } = useTasksStore()
+  const project = useTasksStore((state) => state.project)
+  const addTask = useTasksStore((state) => state.addTask)
 
   const initialForm = {
     titulo: '',
@@ -52,7 +53,7 @@ export const CreateTask = () => {
   } = useForm(initialForm, validateForm)
   const { titulo, descripcion, estado, prioridad, fechaPendiente } = formstate
 
-  const handelSubmit = (e) => {
+  const handelSubmit = async (e) => {
     // console.log(JSON.stringify(formstate))
     const endpointAdd = `http://localhost:8080/kanban-app/tareas`
     e.preventDefault()
@@ -66,7 +67,7 @@ export const CreateTask = () => {
     <PopUpForm
       title={'Crear Tarea'}
       stylesBtn={
-        'p-3 bg-gradient-to-r from-[var(--principal-color)] to-[#e03c3c] rounded-md font-bold'
+        'p-3 mx-2 bg-gradient-to-r from-[var(--principal-color)] to-[#e03c3c] rounded-md font-bold'
       }
       OpenBtn={'Crear Tarea'}
       textBtn={'Crear'}

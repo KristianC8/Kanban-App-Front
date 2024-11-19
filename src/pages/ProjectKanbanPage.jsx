@@ -9,18 +9,16 @@ export const ProjectKanbanPage = () => {
   // const project = useLoaderData()
   const project = useTasksStore((state) => state.project)
   const getProject = useTasksStore((state) => state.getProject)
-  const loading = useTasksStore((state) => state.loading)
-  const getTasks = useTasksStore((state) => state.getTasks)
+  const loadingProject = useTasksStore((state) => state.loadingProject)
   const { id } = useParams()
 
   useEffect(() => {
     getProject(id)
-    getTasks(id)
   }, [id])
 
   return (
     <>
-      {loading ? (
+      {loadingProject ? (
         <p>cargando...</p>
       ) : project === null ? (
         <p>No fue posilbe acceder a la API</p>

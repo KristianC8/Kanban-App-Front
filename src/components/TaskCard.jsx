@@ -1,29 +1,31 @@
 import { DeleteIcon } from './icons/DeleteIcon'
 import { PopUpConfirm } from './PopUpConfirm'
 import { useConfirm } from '../hooks/useConfirm'
-import { useTasksContext } from '../hooks/useTasksContext'
+// import { useTasksContext } from '../hooks/useTasksContext'
 import { useState } from 'react'
 import { UpdateTask } from './UpdateTask'
 import { useDragContext } from '../hooks/useDragContext'
+import { useTasksStore } from '../store/tasks'
 
 /* eslint-disable react/prop-types */
 export const TaskCard = ({ id, title, description, state, priority, date }) => {
-  const { deleteTask, updateTask } = useTasksContext()
+  // const { deleteTask, updateTask } = useTasksContext()
+  const deleteTask = useTasksStore((state) => state.deleteTask)
   const [stateTask, setStateTask] = useState(state)
 
   const handleChangeSelect = (e) => {
-    const form = {
-      estado: e.target.value
-    }
-    setStateTask(e.target.value)
-    handleSubmit(e, form)
+    // const form = {
+    //   estado: e.target.value
+    // }
+    // setStateTask(e.target.value)
+    // handleSubmit(e, form)
   }
 
-  const handleSubmit = (e, form) => {
-    e.preventDefault()
-    const updateStateEndpoint = `http://localhost:8080/kanban-app/estado/tareas/${id}`
-    updateTask(updateStateEndpoint, form, id)
-  }
+  // const handleSubmit = (e, form) => {
+  //   e.preventDefault()
+  //   const updateStateEndpoint = `http://localhost:8080/kanban-app/estado/tareas/${id}`
+  //   updateTask(updateStateEndpoint, form, id)
+  // }
 
   const handleDelete = () => {
     const deleteEndPoint = `http://localhost:8080/kanban-app/tareas/${id}`
@@ -37,7 +39,7 @@ export const TaskCard = ({ id, title, description, state, priority, date }) => {
 
   return (
     <article
-      className='cardTask bg-[#1a1a1a] p-4 mb-4 relative animate-fade transition-all duration-500'
+      className='cardTask bg-[#1a1a1a] p-4 mb-1 relative animate-fade transition-all duration-500'
       draggable
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}

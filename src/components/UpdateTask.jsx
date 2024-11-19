@@ -14,9 +14,11 @@ export const UpdateTask = ({
   date
 }) => {
   // const { project, updateTask } = useTasksContext()
-  const { project } = useTasksStore()
+  const project = useTasksStore((state) => state.project)
+  const updateTask = useTasksStore((state) => state.updateTask)
 
   const initialForm = {
+    id: id,
     titulo: title,
     descripcion: description,
     estado: state,
@@ -64,7 +66,7 @@ export const UpdateTask = ({
     // console.log(JSON.stringify(formstate))
     const endpointUpdate = `http://localhost:8080/kanban-app/tareas/${id}`
     e.preventDefault()
-    initForm()
+    // initForm()
     updateTask(endpointUpdate, formstate, id).then(() => {
       initValidation()
     })
