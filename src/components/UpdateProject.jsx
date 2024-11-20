@@ -4,7 +4,6 @@ import { PopUpForm } from './PopUpForm'
 import { EditIcon } from './icons/EditIcon'
 import { useForm } from '../hooks/useForm'
 import { useProjectsStore } from '../store/projects'
-// import { useProjectsContext } from '../hooks/useProjectsContext'
 
 export const UpdateProject = ({ title, description, id }) => {
   const initialForm = {
@@ -41,13 +40,12 @@ export const UpdateProject = ({ title, description, id }) => {
     initValidation
   } = useForm(initialForm, validateForm)
   const { nombreProyecto, descripciónProyecto } = formstate
-  // const { updateProject } = useProjectsContext()
+
   const updateProject = useProjectsStore((state) => state.updateProject)
 
   const handleSubmit = (e) => {
     const endPointUpdate = `http://localhost:8080/kanban-app/proyectos/${id}`
     e.preventDefault()
-    initForm()
     updateProject(endPointUpdate, formstate, id).then(() => initValidation())
   }
 

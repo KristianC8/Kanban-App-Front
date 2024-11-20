@@ -37,6 +37,11 @@ export const helpHTTP = () => {
     return customFetch(url, options)
   }
 
+  const patch = (url, options = {}) => {
+    options.method = 'PATCH'
+    return customFetch(url, options)
+  }
+
   const del = (url, options = {}) => {
     options.method = 'DELETE'
     return customFetch(url, options)
@@ -46,6 +51,7 @@ export const helpHTTP = () => {
     get,
     post,
     put,
-    del
+    del,
+    patch
   }
 }

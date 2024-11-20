@@ -1,10 +1,8 @@
 import { useEffect } from 'react'
 import { ProjectCard } from './ProjectCard'
-// import { useProjectsContext } from '../hooks/useProjectsContext'
 import { useProjectsStore } from '../store/projects'
 
 export const ProjectsContainer = () => {
-  // const { projects, isLoading, getProjects } = useProjectsContext()
   const projects = useProjectsStore((state) => state.projects)
   const getProjects = useProjectsStore((state) => state.fetchProjects)
   const isLoading = useProjectsStore((state) => state.loading)

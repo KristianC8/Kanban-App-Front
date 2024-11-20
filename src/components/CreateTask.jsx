@@ -1,10 +1,8 @@
 import { PopUpForm } from './PopUpForm'
 import { useForm } from '../hooks/useForm'
 import { useTasksStore } from '../store/tasks'
-// import { useTasksContext } from '../hooks/useTasksContext'
 
 export const CreateTask = () => {
-  // const { project, addTask } = useTasksContext()
   const project = useTasksStore((state) => state.project)
   const addTask = useTasksStore((state) => state.addTask)
 
@@ -54,7 +52,6 @@ export const CreateTask = () => {
   const { titulo, descripcion, estado, prioridad, fechaPendiente } = formstate
 
   const handelSubmit = async (e) => {
-    // console.log(JSON.stringify(formstate))
     const endpointAdd = `http://localhost:8080/kanban-app/tareas`
     e.preventDefault()
     initForm()
@@ -131,12 +128,6 @@ export const CreateTask = () => {
             <option className=' appearance-none' value='todo'>
               Por Hacer
             </option>
-            {/* <option className=' appearance-none' value='inProgress'>
-              En curso
-            </option>
-            <option className=' appearance-none' value='done'>
-              Terminado
-            </option> */}
           </select>
         </div>
         <div className='flex flex-col gap-1'>

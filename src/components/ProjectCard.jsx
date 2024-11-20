@@ -1,21 +1,14 @@
 import React from 'react'
-// import { useState } from 'react'
 import { DeleteIcon } from './icons/DeleteIcon'
 import { GetInIcon } from './icons/GetInIcon'
-// import { helpHTTP } from '../helpers/helpHTTP'
-// import { useProjectsContext } from '../hooks/useProjectsContext'
 import { UpdateProject } from './UpdateProject'
 import { PopUpConfirm } from './PopUpConfirm'
-// import { Link } from 'react-router-dom'
-// import { useTasksContext } from '../hooks/useTasksContext'
 import { useNavigate } from 'react-router-dom'
 import { useConfirm } from '../hooks/useConfirm'
 import { useProjectsStore } from '../store/projects'
-// import { useTasksStore } from '../store/tasks'
 
 // eslint-disable-next-line react/prop-types
 export const ProjectCard = ({ title, description, id }) => {
-  // const { deleteProject } = useProjectsContext()
   const deleteProject = useProjectsStore((state) => state.deleteProject)
 
   const { isVisible, handleOpen, handleClose } = useConfirm()
@@ -25,8 +18,6 @@ export const ProjectCard = ({ title, description, id }) => {
     deleteProject(deleteEndPoint, id).then(() => handleClose())
   }
 
-  // const { getProject } = useTasksContext()
-  // const { getProject } = useTasksStore()
   const navigate = useNavigate()
 
   const cambiarPage = (id) => {
@@ -44,12 +35,6 @@ export const ProjectCard = ({ title, description, id }) => {
         <p>{description}</p>
       </div>
       <div className='flex justify-between'>
-        {/* <Link
-          to={`/projects/${id}`}
-          className='flex items-center gap-2 bg-[var(--principal-color)] p-1 rounded-md'
-        >
-          Ver <GetInIcon />
-        </Link> */}
         <button
           onClick={() => {
             cambiarPage(id)
