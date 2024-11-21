@@ -17,7 +17,6 @@ export const useForm = (intialForm = {}, validateForm) => {
       const mes = String(fechaSeleccionada.getMonth() + 1).padStart(2, '0')
       const año = String(fechaSeleccionada.getFullYear())
       adjustedValue = `${año}-${mes}-${dia}`
-      console.log(dia)
     }
 
     setFormstate({

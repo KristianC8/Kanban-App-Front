@@ -23,7 +23,8 @@ export const UpdateTask = ({
     descripcion: description,
     estado: state,
     prioridad: priority,
-    fechaPendiente: date
+    fechaPendiente: date,
+    posicion: 0
   }
 
   function getMinActualDate() {

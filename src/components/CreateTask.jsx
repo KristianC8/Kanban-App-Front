@@ -12,6 +12,7 @@ export const CreateTask = () => {
     estado: 'todo',
     prioridad: 'low',
     fechaPendiente: getMinActualDate(),
+    posicion: 0,
     proyectoId: project.id
   }
 

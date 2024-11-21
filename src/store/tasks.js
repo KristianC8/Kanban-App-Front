@@ -57,6 +57,10 @@ export const useTasksStore = create((set, get) => ({
   // },
   addTask: async (endPoint, form) => {
     set({ loadingTask: true })
+
+    const { columns } = get()
+    form.posicion = columns.todo.length + 1
+
     helpHTTP()
       .post(endPoint, {
         body: form
@@ -94,6 +98,8 @@ export const useTasksStore = create((set, get) => ({
     let taskColumn = null
     let taskIndex = null
     const { columns } = get()
+    form.posicion = columns[form.estado].length + 1
+
     //copia inmutable del estado
     const newColumns = structuredClone(columns)
     // Buscar la tarea y la columna correspondiente
@@ -105,6 +111,7 @@ export const useTasksStore = create((set, get) => ({
         break
       }
     }
+
     // Validamos si se encontró la tarea antes de continuar
     if (taskColumn !== null && taskIndex !== null) {
       // Actualización optimista con los datos locales
@@ -144,6 +151,7 @@ export const useTasksStore = create((set, get) => ({
     let taskIndex = null
     let task = null
     const { columns } = get()
+    form.posicion = columns[form.estado].length + 1
     //copia inmutable del estado
     const newColumns = structuredClone(columns)
     for (let column in newColumns) {
@@ -158,6 +166,7 @@ export const useTasksStore = create((set, get) => ({
     if (taskState !== null && taskIndex !== null) {
       // Actualización optimista con los datos locales
       task = newColumns[taskState][taskIndex]
+      task.posicion = columns[form.estado].length + 1
       // si cambia el estado eliminamos la tarea de la columna actual
       if (form.estado !== taskState) {
         task.estado = form.estado
@@ -225,6 +234,7 @@ export const useTasksStore = create((set, get) => ({
       if (e.target.classList.contains('kanban-todo')) {
         if (darggingTask.estado !== 'todo') {
           form.estado = 'todo'
+          form.posicion = columns.todo.length + 1
           //eliminar de la columna de estado actual
           newColumns[darggingTask.estado] = newColumns[
             darggingTask.estado
@@ -236,6 +246,7 @@ export const useTasksStore = create((set, get) => ({
       } else if (e.target.classList.contains('kanban-inprogress')) {
         if (darggingTask.estado !== 'inProgress') {
           form.estado = 'inProgress'
+          form.posicion = columns.inProgress.length + 1
           //eliminar de la columna de estado actual
           newColumns[darggingTask.estado] = newColumns[
             darggingTask.estado
@@ -247,6 +258,7 @@ export const useTasksStore = create((set, get) => ({
       } else if (e.target.classList.contains('kanban-done')) {
         if (darggingTask.estado !== 'done') {
           form.estado = 'done'
+          form.posicion = columns.done.length + 1
           //eliminar de la columna de estado actual
           newColumns[darggingTask.estado] = newColumns[
             darggingTask.estado
