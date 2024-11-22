@@ -4,7 +4,7 @@ import { useTasksStore } from '../store/tasks'
 
 export const CreateTask = () => {
   const project = useTasksStore((state) => state.project)
-  const addTask = useTasksStore((state) => state.addTask)
+  const createTask = useTasksStore((state) => state.createTask)
 
   const initialForm = {
     titulo: '',
@@ -56,7 +56,7 @@ export const CreateTask = () => {
     const endpointAdd = `http://localhost:8080/kanban-app/tareas`
     e.preventDefault()
     initForm()
-    addTask(endpointAdd, formstate).then(() => {
+    createTask(endpointAdd, formstate).then(() => {
       initValidation()
     })
   }
