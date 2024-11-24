@@ -5,14 +5,7 @@ import { useForm } from '../hooks/useForm'
 import { EditIcon } from './icons/EditIcon'
 import { useTasksStore } from '../store/tasks'
 
-export const UpdateTask = ({
-  id,
-  title,
-  description,
-  state,
-  priority,
-  date
-}) => {
+export const UpdateTask = ({ id, title, description, state, priority }) => {
   // const { project, updateTask } = useTasksContext()
   const project = useTasksStore((state) => state.project)
   const updateTask = useTasksStore((state) => state.updateTask)
@@ -23,7 +16,7 @@ export const UpdateTask = ({
     descripcion: description,
     estado: state,
     prioridad: priority,
-    fechaPendiente: date,
+    fechaPendiente: getMinActualDate(),
     posicion: 0
   }
 

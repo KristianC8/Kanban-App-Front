@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { helpHTTP } from '../helpers/helpHTTP'
+import { helpTaskPosition } from '../helpers/helpTaskPosition'
 
 export const useTasksStore = create((set, get) => ({
   project: null,
@@ -15,6 +16,7 @@ export const useTasksStore = create((set, get) => ({
   getProject: async (id) => {
     set({ loadingProject: true })
     try {
+      //Api
       const data = await helpHTTP().get(
         `http://localhost:8080/kanban-app/proyectos/${id}`
       )
@@ -45,6 +47,7 @@ export const useTasksStore = create((set, get) => ({
       //Agragar la ultima posicion a la tarea en la columna
       const newTask = { ...form, posicion: columns.todo.length + 1 }
 
+      //Api
       const response = await helpHTTP().post(endPoint, {
         body: newTask
       })
@@ -65,6 +68,7 @@ export const useTasksStore = create((set, get) => ({
 
   deleteTask: async (endPoint, id) => {
     try {
+      //Api
       const response = await helpHTTP().del(endPoint)
       if (JSON.stringify(response).includes('Error')) throw response
 
@@ -84,24 +88,7 @@ export const useTasksStore = create((set, get) => ({
   updateTask: async (endPoint, form, id) => {
     try {
       const { columns } = get()
-      const taskColumn = Object.keys(columns).find((column) =>
-        columns[column].some((item) => item.id === id)
-      )
-
-      //Validar si se encuentra la tarea
-      if (!taskColumn) {
-        console.error('No se encontró la tarea con el id:', id)
-        return
-      }
-
-      const taskIndex = columns[taskColumn].findIndex((item) => item.id === id)
-      if (taskIndex === -1) {
-        console.error(
-          'No se encontró el índice de la tarea en la columna:',
-          taskColumn
-        )
-        return
-      }
+      const { taskColumn, taskIndex } = helpTaskPosition(columns, id)
 
       const position =
         form.estado === taskColumn
@@ -111,13 +98,14 @@ export const useTasksStore = create((set, get) => ({
       // Actualizar la posición de la tarea en la nueva columna
       const updatedTask = { ...form, posicion: position }
 
+      //Api
       const response = await helpHTTP().put(endPoint, { body: updatedTask })
       if (JSON.stringify(response).includes('Error')) throw response
 
       set((state) => {
         const { columns } = state
 
-        //Si no cambie el estado se actualiza la tarea
+        //Si no cambia el estado se actualiza la tarea
         if (form.estado === taskColumn) {
           return {
             columns: {
@@ -143,79 +131,52 @@ export const useTasksStore = create((set, get) => ({
   },
 
   updateStateTask: async (endPoint, form, id) => {
-    let taskState = null
-    let taskIndex = null
-    let task = null
-    const { columns } = get()
-    form.posicion = columns[form.estado].length + 1
-    //copia inmutable del estado
-    const newColumns = structuredClone(columns)
-    for (let column in newColumns) {
-      const index = newColumns[column].findIndex((item) => item.id === id)
-      if (index !== -1) {
-        taskState = column
-        taskIndex = index
-        break
-      }
-    }
-    // Validamos si se encontró la tarea antes de continuar
-    if (taskState !== null && taskIndex !== null) {
-      // Actualización optimista con los datos locales
-      task = newColumns[taskState][taskIndex]
-      task.posicion = columns[form.estado].length + 1
-      // si cambia el estado eliminamos la tarea de la columna actual
-      if (form.estado !== taskState) {
-        task.estado = form.estado
-        newColumns[taskState] = newColumns[taskState].filter(
-          (item) => item.id !== id
-        )
-        //Agregamos la tarea a la columna del nuevo estado
-        const newStateColumn = form.estado
-        newColumns[newStateColumn] = [...newColumns[newStateColumn], task]
-      }
-      // Actualizar el estado global
-      set({ columns: newColumns })
-    } else {
-      console.error('No se encontró la tarea con el id especificado:', id)
-    }
-
     try {
-      const res = await helpHTTP().patch(endPoint, { body: form })
-      if (JSON.stringify(res).includes('Error')) throw res
-    } catch (err) {
-      console.error(err)
-      // Opcional: revertir al estado anterior si hay un error
-      // set({ columns: previousState })
+      const { columns } = get()
+      const { taskColumn, taskIndex } = helpTaskPosition(columns, id)
+
+      const position = columns[form.estado].length + 1 //Asignar la posicion final en la columna
+      const updatedTask = { ...form, posicion: position }
+
+      //Api
+      const response = await helpHTTP().patch(endPoint, { body: updatedTask })
+      if (JSON.stringify(response).includes('Error')) throw response
+
+      set((state) => {
+        const { columns } = state
+
+        // Si la tarea cambia de columna
+        if (form.estado !== taskColumn) {
+          return {
+            columns: {
+              ...columns,
+              [taskColumn]: columns[taskColumn].filter(
+                (item) => item.id !== id
+              ), // Eliminar de la columna actual
+              [form.estado]: [...columns[form.estado], response] // Agregar a la nueva columna con la respuesta actualizada
+            }
+          }
+        }
+
+        // Si la tarea permanece en la misma columna
+        return {
+          columns: {
+            ...columns,
+            [taskColumn]: columns[taskColumn].map((item, index) =>
+              index === taskIndex ? response : item
+            )
+          }
+        }
+      })
+    } catch (error) {
+      console.error('Update State Task Error:', error)
     }
   },
 
   dragStart: (id) => {
-    // e.preventDefault()
-    // let taskId = e.target.id
-    let taskState = null
-    let taskIndex = null
-    let task = null
     const { columns } = get()
-    //copia inmutable del estado
-    const newColumns = structuredClone(columns)
-    for (let column in newColumns) {
-      const index = newColumns[column].findIndex((item) => item.id === id)
-      if (index !== -1) {
-        taskState = column
-        taskIndex = index
-        break
-      }
-    }
-    // Validamos si se encontró la tarea antes de continuar
-    if (taskState !== null && taskIndex !== null) {
-      // Actualización optimista con los datos locales
-      task = newColumns[taskState][taskIndex]
-      console.log('start', task)
-      // Actualizar el estado global
-      set({ darggingTask: task })
-    } else {
-      console.error('No se encontró la tarea con el id especificado:', id)
-    }
+    const { task } = helpTaskPosition(columns, id)
+    set({ darggingTask: task })
   },
 
   dragEnd: () => {
@@ -224,62 +185,53 @@ export const useTasksStore = create((set, get) => ({
 
   onDrop: async (e) => {
     e.preventDefault()
-    const { darggingTask } = get()
-    const { columns } = get()
+    const { darggingTask, columns } = get()
+    const previousState = structuredClone(columns)
     const newColumns = structuredClone(columns)
-    const newDragTask = { ...darggingTask }
-    const form = {}
+
+    const dropTargetClass = e.target.classList
+    const columnMappings = {
+      'kanban-todo': 'todo',
+      'kanban-inprogress': 'inProgress',
+      'kanban-done': 'done'
+    }
+
+    // const newEstado = Object.keys(columnMappings).find((className) =>
+    //   dropTargetClass.contains(className)
+    // )
+    const newState = Object.entries(columnMappings).find(([className]) =>
+      dropTargetClass.contains(className)
+    )?.[1]
+
+    const updatedTask = { ...darggingTask, estado: newState }
+    const form = {
+      estado: newState,
+      posicion: columns[newState].length + 1
+    }
+
     if (darggingTask) {
-      if (e.target.classList.contains('kanban-todo')) {
-        if (darggingTask.estado !== 'todo') {
-          form.estado = 'todo'
-          form.posicion = columns.todo.length + 1
-          //eliminar de la columna de estado actual
-          newColumns[darggingTask.estado] = newColumns[
-            darggingTask.estado
-          ].filter((item) => item.id !== darggingTask.id)
-          //Agregamos la tarea a la columna del nuevo estado
-          newDragTask.estado = 'todo'
-          newColumns['todo'] = [...newColumns['todo'], newDragTask]
-        }
-      } else if (e.target.classList.contains('kanban-inprogress')) {
-        if (darggingTask.estado !== 'inProgress') {
-          form.estado = 'inProgress'
-          form.posicion = columns.inProgress.length + 1
-          //eliminar de la columna de estado actual
-          newColumns[darggingTask.estado] = newColumns[
-            darggingTask.estado
-          ].filter((item) => item.id !== darggingTask.id)
-          //Agregamos la tarea a la columna del nuevo estado
-          newDragTask.estado = 'inProgress'
-          newColumns['inProgress'] = [...newColumns['inProgress'], newDragTask]
-        }
-      } else if (e.target.classList.contains('kanban-done')) {
-        if (darggingTask.estado !== 'done') {
-          form.estado = 'done'
-          form.posicion = columns.done.length + 1
-          //eliminar de la columna de estado actual
-          newColumns[darggingTask.estado] = newColumns[
-            darggingTask.estado
-          ].filter((item) => item.id !== darggingTask.id)
-          //Agregamos la tarea a la columna del nuevo estado
-          newDragTask.estado = 'done'
-          newColumns['done'] = [...newColumns['done'], newDragTask]
-        }
+      if (darggingTask.estado !== newState) {
+        //eliminar de la columna de estado actual
+        newColumns[darggingTask.estado] = newColumns[
+          darggingTask.estado
+        ].filter((item) => item.id !== darggingTask.id)
+        //Agregamos la tarea a la columna del nuevo estado
+        newColumns[newState] = [...newColumns[newState], updatedTask]
       }
 
-      set({ columns: newColumns })
+      set({ columns: newColumns }) // Actualizacion Optimista
 
       try {
-        const res = await helpHTTP().patch(
+        //Api
+        const response = await helpHTTP().patch(
           `http://localhost:8080/kanban-app/estado/tareas/${darggingTask.id}`,
           { body: form }
         )
-        if (JSON.stringify(res).includes('Error')) throw res
-      } catch (err) {
-        console.error(err)
+        if (JSON.stringify(response).includes('Error')) throw response
+      } catch (error) {
+        console.error(`Drop Update Task Error: ${error}`)
         // Opcional: revertir al estado anterior si hay un error
-        // set({ columns: previousState })
+        set({ columns: previousState })
       }
     }
   },
