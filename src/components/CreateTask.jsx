@@ -65,7 +65,7 @@ export const CreateTask = () => {
     <PopUpForm
       title={'Crear Tarea'}
       stylesBtn={
-        'p-3 mx-2 bg-gradient-to-r from-[var(--principal-color)] to-[#e03c3c] rounded-md font-bold'
+        'p-3 mx-2 mt-4 bg-gradient-to-r from-[var(--principal-color)] to-[#e03c3c] rounded-md font-bold'
       }
       OpenBtn={'Crear Tarea'}
       textBtn={'Crear'}

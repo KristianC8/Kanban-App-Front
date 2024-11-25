@@ -22,7 +22,6 @@ export const KanbanBoard = () => {
           <h3 className='text-sm sm:text-xl font-bold text-center mb-4'>
             Por Hacer
           </h3>
-          <CreateTask />
         </div>
         <div
           className='columnBoard kanban-todo transition-all duration-300 min-h-screen-mh-kanban'
@@ -33,8 +32,7 @@ export const KanbanBoard = () => {
           {loadingTask && <span>Agregando Tarea...</span>}
           {columns.todo.length > 0 &&
             columns.todo
-              .slice()
-              .reverse()
+              .sort((a, b) => a.posicion + b.posicion)
               .map((tarea) => (
                 <TaskCard
                   key={tarea.id}
@@ -46,6 +44,7 @@ export const KanbanBoard = () => {
                   date={tarea.fechaPendiente}
                 />
               ))}
+          <CreateTask />
         </div>
       </div>
       <div
@@ -58,17 +57,19 @@ export const KanbanBoard = () => {
           En Curso
         </h3>
         {columns.inProgress.length > 0 &&
-          columns.inProgress.map((tarea) => (
-            <TaskCard
-              key={tarea.id}
-              id={tarea.id}
-              title={tarea.titulo}
-              description={tarea.descripcion}
-              state={tarea.estado}
-              priority={tarea.prioridad}
-              date={tarea.fechaPendiente}
-            />
-          ))}
+          columns.inProgress
+            .sort((a, b) => a.posicion - b.posicion)
+            .map((tarea) => (
+              <TaskCard
+                key={tarea.id}
+                id={tarea.id}
+                title={tarea.titulo}
+                description={tarea.descripcion}
+                state={tarea.estado}
+                priority={tarea.prioridad}
+                date={tarea.fechaPendiente}
+              />
+            ))}
       </div>
       <div
         className='columnBoard kanban-done min-h-screen-mh-kanban border border-[#515151] rounded-md py-4 px-1 transition-all duration-300'
@@ -80,17 +81,19 @@ export const KanbanBoard = () => {
           Terminado
         </h3>
         {columns.done.length > 0 &&
-          columns.done.map((tarea) => (
-            <TaskCard
-              key={tarea.id}
-              id={tarea.id}
-              title={tarea.titulo}
-              description={tarea.descripcion}
-              state={tarea.estado}
-              priority={tarea.prioridad}
-              date={tarea.fechaPendiente}
-            />
-          ))}
+          columns.done
+            .sort((a, b) => a.posicion - b.posicion)
+            .map((tarea) => (
+              <TaskCard
+                key={tarea.id}
+                id={tarea.id}
+                title={tarea.titulo}
+                description={tarea.descripcion}
+                state={tarea.estado}
+                priority={tarea.prioridad}
+                date={tarea.fechaPendiente}
+              />
+            ))}
       </div>
     </div>
   )

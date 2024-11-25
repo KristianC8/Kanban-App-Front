@@ -196,9 +196,6 @@ export const useTasksStore = create((set, get) => ({
       'kanban-done': 'done'
     }
 
-    // const newEstado = Object.keys(columnMappings).find((className) =>
-    //   dropTargetClass.contains(className)
-    // )
     const newState = Object.entries(columnMappings).find(([className]) =>
       dropTargetClass.contains(className)
     )?.[1]
@@ -206,8 +203,12 @@ export const useTasksStore = create((set, get) => ({
     const updatedTask = { ...darggingTask, estado: newState }
     const form = {
       estado: newState,
-      posicion: columns[newState].length + 1
+      posicion: newColumns[newState].length + 1
     }
+
+    // const newEstado = Object.keys(columnMappings).find((className) =>
+    //   dropTargetClass.contains(className)
+    // )
 
     if (darggingTask) {
       if (darggingTask.estado !== newState) {
