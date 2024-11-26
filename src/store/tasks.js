@@ -183,11 +183,9 @@ export const useTasksStore = create((set, get) => ({
     set({ darggingTask: null })
   },
 
-  onDrop: async (e) => {
+  onDropColumn: async (e) => {
     e.preventDefault()
     const { darggingTask, columns } = get()
-    const previousState = structuredClone(columns)
-    const newColumns = structuredClone(columns)
 
     const dropTargetClass = e.target.classList
     const columnMappings = {
@@ -200,11 +198,7 @@ export const useTasksStore = create((set, get) => ({
       dropTargetClass.contains(className)
     )?.[1]
 
-    const updatedTask = { ...darggingTask, estado: newState }
-    const form = {
-      estado: newState,
-      posicion: newColumns[newState].length + 1
-    }
+    const previousColumns = structuredClone(columns)
 
     // const newEstado = Object.keys(columnMappings).find((className) =>
     //   dropTargetClass.contains(className)
@@ -212,29 +206,50 @@ export const useTasksStore = create((set, get) => ({
 
     if (darggingTask) {
       if (darggingTask.estado !== newState) {
-        //eliminar de la columna de estado actual
-        newColumns[darggingTask.estado] = newColumns[
-          darggingTask.estado
-        ].filter((item) => item.id !== darggingTask.id)
-        //Agregamos la tarea a la columna del nuevo estado
-        newColumns[newState] = [...newColumns[newState], updatedTask]
-      }
+        const updatedTask = { ...darggingTask, estado: newState }
+        const form = {
+          estado: newState,
+          posicion: columns[newState].length + 1
+        }
+        try {
+          //Api
+          const response = await helpHTTP().patch(
+            `http://localhost:8080/kanban-app/estado/tareas/${darggingTask.id}`,
+            { body: form }
+          )
+          if (JSON.stringify(response).includes('Error')) throw response
 
-      set({ columns: newColumns }) // Actualizacion Optimista
+          set((state) => {
+            // Filtrar la columna anterior para eliminar la tarea
+            const prevColumn = state.columns[darggingTask.estado].filter(
+              (item) => item.id !== darggingTask.id
+            )
 
-      try {
-        //Api
-        const response = await helpHTTP().patch(
-          `http://localhost:8080/kanban-app/estado/tareas/${darggingTask.id}`,
-          { body: form }
-        )
-        if (JSON.stringify(response).includes('Error')) throw response
-      } catch (error) {
-        console.error(`Drop Update Task Error: ${error}`)
-        // Opcional: revertir al estado anterior si hay un error
-        set({ columns: previousState })
+            // Crear una nueva columna destino con la tarea actualizada al final
+            const targetColumn = [
+              ...state.columns[newState],
+              { ...updatedTask, posicion: state.columns[newState].length + 1 }
+            ]
+
+            // Retornar el nuevo estado con ambas columnas actualizadas
+            return {
+              columns: {
+                ...state.columns,
+                [darggingTask.estado]: prevColumn,
+                [newState]: targetColumn.sort((a, b) => a.posicion - b.posicion) // Orden explícito
+              }
+            }
+          })
+        } catch (error) {
+          console.error(`Drop Update Task Error: ${error}`)
+          set({ columns: previousColumns })
+        }
       }
     }
+  },
+
+  onDropCard: (e) => {
+    e.preventDefault()
   },
 
   onDragOver: (e) => {

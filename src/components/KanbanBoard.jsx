@@ -6,7 +6,7 @@ export const KanbanBoard = () => {
   // const { project, scrollPosRef } = useTasksContext()
   const columns = useTasksStore((state) => state.columns)
   const loadingTask = useTasksStore((state) => state.loadingTask)
-  const onDrop = useTasksStore((state) => state.onDrop)
+  const onDropColumn = useTasksStore((state) => state.onDropColumn)
   const onDragOver = useTasksStore((state) => state.onDragOver)
   const onDragLeave = useTasksStore((state) => state.onDragLeave)
 
@@ -25,14 +25,14 @@ export const KanbanBoard = () => {
         </div>
         <div
           className='columnBoard kanban-todo transition-all duration-300 min-h-screen-mh-kanban'
-          onDrop={onDrop}
+          onDrop={onDropColumn}
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}
         >
           {loadingTask && <span>Agregando Tarea...</span>}
           {columns.todo.length > 0 &&
             columns.todo
-              .sort((a, b) => a.posicion + b.posicion)
+              .sort((a, b) => a.posicion - b.posicion)
               .map((tarea) => (
                 <TaskCard
                   key={tarea.id}
@@ -49,7 +49,7 @@ export const KanbanBoard = () => {
       </div>
       <div
         className='columnBoard kanban-inprogress min-h-screen-mh-kanban border border-[#515151] rounded-md py-4 px-1 transition-all duration-300'
-        onDrop={onDrop}
+        onDrop={onDropColumn}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
       >
@@ -73,7 +73,7 @@ export const KanbanBoard = () => {
       </div>
       <div
         className='columnBoard kanban-done min-h-screen-mh-kanban border border-[#515151] rounded-md py-4 px-1 transition-all duration-300'
-        onDrop={onDrop}
+        onDrop={onDropColumn}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
       >
