@@ -68,23 +68,35 @@ export const useTasksStore = create((set, get) => ({
 
   deleteTask: async (endPoint, id) => {
     try {
-      //Api
+      // API
       const response = await helpHTTP().del(endPoint)
       if (JSON.stringify(response).includes('Error')) throw response
 
-      set((state) => ({
-        columns: Object.fromEntries(
-          Object.entries(state.columns).map(([key, items]) => [
-            key,
-            items.filter((item) => item.id !== id)
-          ])
-        )
-      }))
+      set((state) => {
+        const { columns } = state
+
+        const { taskColumn, task } = helpTaskPosition(columns, id)
+
+        // Eliminar la tarea de la columna y ajustar posiciones
+        const updatedColumn = columns[taskColumn]
+          .filter((item) => item.id !== id)
+          .map((item) => ({
+            ...item,
+            posicion:
+              item.posicion > task.posicion ? item.posicion - 1 : item.posicion
+          }))
+        console.log(updatedColumn)
+        return {
+          columns: {
+            ...columns,
+            [taskColumn]: updatedColumn
+          }
+        }
+      })
     } catch (error) {
-      console.log(`Delete Task Error: ${error}`)
+      console.error(`Delete Task Error: ${error}`)
     }
   },
-
   updateTask: async (endPoint, form, id) => {
     try {
       const { columns } = get()
@@ -117,10 +129,21 @@ export const useTasksStore = create((set, get) => ({
           }
         }
         //Si cambia el estado se elimina y se agrega a la columna correspondiente
+        const prevColumn = columns[taskColumn].filter((item) => item.id !== id)
+
+        for (let task of prevColumn) {
+          if (
+            task.posicion >
+            columns[taskColumn].find((item) => item.id === id).posicion
+          ) {
+            task.posicion -= 1
+          }
+        }
+        console.log(prevColumn)
         return {
           columns: {
             ...columns,
-            [taskColumn]: columns[taskColumn].filter((item) => item.id !== id), // Eliminar de la columna actual
+            [taskColumn]: prevColumn, // Eliminar de la columna actual
             [form.estado]: [...columns[form.estado], response] // Agregar a la nueva columna
           }
         }
@@ -145,14 +168,24 @@ export const useTasksStore = create((set, get) => ({
       set((state) => {
         const { columns } = state
 
+        const prevColumn = columns[taskColumn].filter((item) => item.id !== id)
+
+        for (let task of prevColumn) {
+          if (
+            task.posicion >
+            columns[taskColumn].find((item) => item.id === id).posicion
+          ) {
+            task.posicion -= 1
+          }
+        }
+        console.log(prevColumn)
+
         // Si la tarea cambia de columna
         if (form.estado !== taskColumn) {
           return {
             columns: {
               ...columns,
-              [taskColumn]: columns[taskColumn].filter(
-                (item) => item.id !== id
-              ), // Eliminar de la columna actual
+              [taskColumn]: prevColumn, // Eliminar de la columna actual
               [form.estado]: [...columns[form.estado], response] // Agregar a la nueva columna con la respuesta actualizada
             }
           }
@@ -224,6 +257,14 @@ export const useTasksStore = create((set, get) => ({
             const prevColumn = state.columns[darggingTask.estado].filter(
               (item) => item.id !== darggingTask.id
             )
+
+            for (let task of prevColumn) {
+              if (task.posicion > darggingTask.posicion) {
+                task.posicion -= 1
+              }
+            }
+
+            console.log(prevColumn)
 
             // Crear una nueva columna destino con la tarea actualizada al final
             const targetColumn = [
