@@ -238,7 +238,7 @@ export const useTasksStore = create((set, get) => ({
     // )
 
     if (darggingTask) {
-      if (darggingTask.estado !== newState) {
+      if (newState && darggingTask.estado !== newState) {
         const updatedTask = { ...darggingTask, estado: newState }
         const form = {
           estado: newState,
@@ -289,8 +289,105 @@ export const useTasksStore = create((set, get) => ({
     }
   },
 
-  onDropCard: (e) => {
+  onDropCard: async (e) => {
     e.preventDefault()
+
+    const { columns, darggingTask } = get()
+    const taskDropId = Number(e.target.parentNode.id)
+    let newPosition = null
+
+    //Identificamos la tarea sobre la que se está haciendo el drop dentro de las columnas
+    const { taskColumn, taskIndex, task } = helpTaskPosition(
+      columns,
+      taskDropId
+    )
+
+    if (e.target.classList.contains('cardUp')) {
+      console.log('up')
+      // console.log('tarea:', task)
+      if (taskIndex === 0) {
+        newPosition = columns[taskColumn][0].posicion - 0.01
+        // console.log('primero', newPosition)
+      } else {
+        newPosition =
+          (columns[taskColumn][taskIndex - 1].posicion + task.posicion) / 2
+        // console.log('la nueva posicion es:', newPosition)
+      }
+    } else if (e.target.classList.contains('cardDown')) {
+      console.log('down')
+      // console.log('tarea:', task)
+      if (taskIndex === columns[taskColumn].length - 1) {
+        newPosition =
+          columns[taskColumn][columns[taskColumn].length - 1].posicion + 1
+        // console.log('ultimo', newPosition)
+      } else {
+        newPosition =
+          (task.posicion + columns[taskColumn][taskIndex + 1].posicion) / 2
+        // console.log('la nueva posicion es:', newPosition)
+      }
+    }
+    console.log(newPosition)
+
+    if (darggingTask && newPosition) {
+      try {
+        const form = {
+          idTarea: darggingTask.id,
+          nuevoEstado: taskColumn,
+          nuevaPosicion: newPosition
+        }
+        const response = await helpHTTP().post(
+          'http://localhost:8080/kanban-app/mover',
+          { body: form }
+        )
+        if (JSON.stringify(response).includes('Error')) throw response
+        set((state) => {
+          const updatedTask = { ...darggingTask, estado: taskColumn }
+          // Filtrar la columna anterior para eliminar la tarea
+          const prevColumn = state.columns[darggingTask.estado].filter(
+            (item) => item.id !== darggingTask.id
+          )
+
+          for (let task of prevColumn) {
+            if (task.posicion > darggingTask.posicion) {
+              task.posicion -= 1
+            }
+          }
+
+          console.log(prevColumn)
+
+          // Crear una nueva columna destino con la tarea actualizada al final
+          const targetColumn = [
+            ...state.columns[taskColumn],
+            { ...updatedTask, posicion: newPosition }
+          ]
+
+          // Retornar el nuevo estado con ambas columnas actualizadas
+          if (darggingTask.estado !== taskColumn) {
+            return {
+              columns: {
+                ...state.columns,
+                [darggingTask.estado]: prevColumn,
+                [taskColumn]: targetColumn.sort(
+                  (a, b) => a.posicion - b.posicion
+                ) // Orden explícito
+              }
+            }
+          } else {
+            return {
+              columns: {
+                ...state.columns,
+                [taskColumn]: [
+                  ...prevColumn,
+                  { ...updatedTask, posicion: newPosition }
+                ].sort((a, b) => a.posicion - b.posicion)
+              }
+            }
+          }
+        })
+      } catch (error) {
+        console.error(`Move Task Error: ${error}`)
+      }
+    }
   },
 
   onDragOver: (e) => {

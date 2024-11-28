@@ -42,6 +42,7 @@ export const KanbanBoard = () => {
                   state={tarea.estado}
                   priority={tarea.prioridad}
                   date={tarea.fechaPendiente}
+                  position={tarea.posicion}
                 />
               ))}
           <CreateTask />
@@ -68,6 +69,7 @@ export const KanbanBoard = () => {
                 state={tarea.estado}
                 priority={tarea.prioridad}
                 date={tarea.fechaPendiente}
+                position={tarea.posicion}
               />
             ))}
       </div>
@@ -92,6 +94,7 @@ export const KanbanBoard = () => {
                 state={tarea.estado}
                 priority={tarea.prioridad}
                 date={tarea.fechaPendiente}
+                position={tarea.posicion}
               />
             ))}
       </div>
