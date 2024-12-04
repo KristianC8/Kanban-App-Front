@@ -40,169 +40,187 @@ export const useTasksStore = create((set, get) => ({
   },
 
   createTask: async (endPoint, form) => {
+    const { columns } = get()
+    const previousState = structuredClone(columns)
+    //Agragar la ultima posicion a la tarea en la columna
+    const newTask = { ...form, posicion: columns.todo.length + 1 }
+
+    //Estado Actualización optimista
+    set((state) => ({
+      columns: {
+        ...state.columns,
+        todo: [...state.columns.todo, newTask]
+      }
+    }))
+
+    //Api
     try {
       set({ loadingTask: true })
-
-      const { columns } = get()
-      //Agragar la ultima posicion a la tarea en la columna
-      const newTask = { ...form, posicion: columns.todo.length + 1 }
-
-      //Api
       const response = await helpHTTP().post(endPoint, {
         body: newTask
       })
       if (JSON.stringify(response).includes('Error')) throw response
-
-      set((state) => ({
-        columns: {
-          ...state.columns,
-          todo: [...state.columns.todo, response]
-        }
-      }))
     } catch (error) {
       console.log(`Create Task Error: ${error}`)
+      // Retorna al estado anterior
+      set({ columns: previousState })
     } finally {
       set({ loadingTask: false })
     }
   },
 
   deleteTask: async (endPoint, id) => {
+    const { columns } = get()
+    const previousState = structuredClone(columns)
+    set((state) => {
+      const { columns } = state
+
+      const { taskColumn, task } = helpTaskPosition(columns, id)
+
+      // Eliminar la tarea de la columna y ajustar posiciones
+      const updatedColumn = columns[taskColumn]
+        .filter((item) => item.id !== id)
+        .map((item) => ({
+          ...item,
+          posicion:
+            item.posicion > task.posicion ? item.posicion - 1 : item.posicion
+        }))
+      console.log(updatedColumn)
+      return {
+        columns: {
+          ...columns,
+          [taskColumn]: updatedColumn
+        }
+      }
+    })
+
+    // API
     try {
-      // API
       const response = await helpHTTP().del(endPoint)
       if (JSON.stringify(response).includes('Error')) throw response
-
-      set((state) => {
-        const { columns } = state
-
-        const { taskColumn, task } = helpTaskPosition(columns, id)
-
-        // Eliminar la tarea de la columna y ajustar posiciones
-        const updatedColumn = columns[taskColumn]
-          .filter((item) => item.id !== id)
-          .map((item) => ({
-            ...item,
-            posicion:
-              item.posicion > task.posicion ? item.posicion - 1 : item.posicion
-          }))
-        console.log(updatedColumn)
-        return {
-          columns: {
-            ...columns,
-            [taskColumn]: updatedColumn
-          }
-        }
-      })
     } catch (error) {
       console.error(`Delete Task Error: ${error}`)
+      // Retorna al estado anterior
+      set({ columns: previousState })
     }
   },
   updateTask: async (endPoint, form, id) => {
-    try {
-      const { columns } = get()
-      const { taskColumn, taskIndex } = helpTaskPosition(columns, id)
+    const { columns } = get()
+    const previousState = structuredClone(columns)
+    const { taskColumn, taskIndex } = helpTaskPosition(columns, id)
 
-      const position =
-        form.estado === taskColumn
-          ? columns[taskColumn][taskIndex].posicion // Mantener la posición original
-          : columns[form.estado].length + 1 //Asignar la posicion final en la columna
+    const position =
+      form.estado === taskColumn
+        ? columns[taskColumn][taskIndex].posicion // Mantener la posición original
+        : columns[form.estado].length + 1 //Asignar la posicion final en la columna
 
-      // Actualizar la posición de la tarea en la nueva columna
-      const updatedTask = { ...form, posicion: position }
+    // Actualizar la posición de la tarea en la nueva columna
+    const updatedTask = { ...form, posicion: position }
 
-      //Api
-      const response = await helpHTTP().put(endPoint, { body: updatedTask })
-      if (JSON.stringify(response).includes('Error')) throw response
+    //Actialización optimista del estado
+    set((state) => {
+      const { columns } = state
 
-      set((state) => {
-        const { columns } = state
-
-        //Si no cambia el estado se actualiza la tarea
-        if (form.estado === taskColumn) {
-          return {
-            columns: {
-              ...columns,
-              [taskColumn]: columns[taskColumn].map((item, index) =>
-                index === taskIndex ? response : item
-              )
-            }
-          }
-        }
-        //Si cambia el estado se elimina y se agrega a la columna correspondiente
-        const prevColumn = columns[taskColumn].filter((item) => item.id !== id)
-
-        for (let task of prevColumn) {
-          if (
-            task.posicion >
-            columns[taskColumn].find((item) => item.id === id).posicion
-          ) {
-            task.posicion -= 1
-          }
-        }
-        console.log(prevColumn)
-        return {
-          columns: {
-            ...columns,
-            [taskColumn]: prevColumn, // Eliminar de la columna actual
-            [form.estado]: [...columns[form.estado], response] // Agregar a la nueva columna
-          }
-        }
-      })
-    } catch (error) {
-      console.error('Update Task Error:', error)
-    }
-  },
-
-  updateStateTask: async (endPoint, form, id) => {
-    try {
-      const { columns } = get()
-      const { taskColumn, taskIndex } = helpTaskPosition(columns, id)
-
-      const position = columns[form.estado].length + 1 //Asignar la posicion final en la columna
-      const updatedTask = { ...form, posicion: position }
-
-      //Api
-      const response = await helpHTTP().patch(endPoint, { body: updatedTask })
-      if (JSON.stringify(response).includes('Error')) throw response
-
-      set((state) => {
-        const { columns } = state
-
-        const prevColumn = columns[taskColumn].filter((item) => item.id !== id)
-
-        for (let task of prevColumn) {
-          if (
-            task.posicion >
-            columns[taskColumn].find((item) => item.id === id).posicion
-          ) {
-            task.posicion -= 1
-          }
-        }
-        console.log(prevColumn)
-
-        // Si la tarea cambia de columna
-        if (form.estado !== taskColumn) {
-          return {
-            columns: {
-              ...columns,
-              [taskColumn]: prevColumn, // Eliminar de la columna actual
-              [form.estado]: [...columns[form.estado], response] // Agregar a la nueva columna con la respuesta actualizada
-            }
-          }
-        }
-
-        // Si la tarea permanece en la misma columna
+      //Si no cambia el estado se actualiza la tarea
+      if (form.estado === taskColumn) {
         return {
           columns: {
             ...columns,
             [taskColumn]: columns[taskColumn].map((item, index) =>
-              index === taskIndex ? response : item
+              index === taskIndex ? updatedTask : item
             )
           }
         }
+      }
+      //Si cambia el estado se elimina y se agrega a la columna correspondiente
+      const prevColumn = columns[taskColumn].filter((item) => item.id !== id)
+
+      for (let task of prevColumn) {
+        if (
+          task.posicion >
+          columns[taskColumn].find((item) => item.id === id).posicion
+        ) {
+          task.posicion -= 1
+        }
+      }
+      console.log(prevColumn)
+      return {
+        columns: {
+          ...columns,
+          [taskColumn]: prevColumn, // Eliminar de la columna actual
+          [form.estado]: [...columns[form.estado], updatedTask] // Agregar a la nueva columna
+        }
+      }
+    })
+
+    //Api
+    try {
+      const response = await helpHTTP().put(endPoint, { body: updatedTask })
+      if (JSON.stringify(response).includes('Error')) throw response
+    } catch (error) {
+      console.error('Update Task Error:', error)
+      // Retorna al estado anterior
+      set({ columns: previousState })
+    }
+  },
+
+  updateStateTask: async (endPoint, form, id) => {
+    const { columns } = get()
+    const previousState = structuredClone(columns)
+    const { taskColumn, taskIndex, task } = helpTaskPosition(columns, id)
+
+    const position = columns[form.estado].length + 1 //Asignar la posicion final en la columna
+    const updatedState = { ...form, posicion: position }
+    const updatedTask = { ...task, estado: form.estado, posicion: position }
+
+    //Actualización optimista
+    set((state) => {
+      const { columns } = state
+
+      const prevColumn = columns[taskColumn].filter((item) => item.id !== id)
+
+      for (let task of prevColumn) {
+        if (
+          task.posicion >
+          columns[taskColumn].find((item) => item.id === id).posicion
+        ) {
+          task.posicion -= 1
+        }
+      }
+      console.log(prevColumn)
+
+      // Si la tarea cambia de columna
+      if (form.estado !== taskColumn) {
+        return {
+          columns: {
+            ...columns,
+            [taskColumn]: prevColumn, // Eliminar de la columna actual
+            [form.estado]: [...columns[form.estado], updatedTask] // Agregar a la nueva columna con la respuesta actualizada
+          }
+        }
+      }
+
+      // Si la tarea permanece en la misma columna
+      return {
+        columns: {
+          ...columns,
+          [taskColumn]: columns[taskColumn].map((item, index) =>
+            index === taskIndex ? updatedTask : item
+          )
+        }
+      }
+    })
+
+    //Api
+    try {
+      const response = await helpHTTP().patch(endPoint, {
+        body: updatedState
       })
+      if (JSON.stringify(response).includes('Error')) throw response
     } catch (error) {
       console.error('Update State Task Error:', error)
+      // Retorna al estado anterior
+      set({ columns: previousState })
     }
   },
 
@@ -231,7 +249,7 @@ export const useTasksStore = create((set, get) => ({
       dropTargetClass.contains(className)
     )?.[1]
 
-    const previousColumns = structuredClone(columns)
+    const previousState = structuredClone(columns)
 
     // const newEstado = Object.keys(columnMappings).find((className) =>
     //   dropTargetClass.contains(className)
@@ -244,6 +262,36 @@ export const useTasksStore = create((set, get) => ({
           estado: newState,
           posicion: columns[newState].length + 1
         }
+        //Actualización optimista del estado
+        set((state) => {
+          // Filtrar la columna anterior para eliminar la tarea
+          const prevColumn = state.columns[darggingTask.estado].filter(
+            (item) => item.id !== darggingTask.id
+          )
+
+          for (let task of prevColumn) {
+            if (task.posicion > darggingTask.posicion) {
+              task.posicion -= 1
+            }
+          }
+
+          console.log(prevColumn)
+
+          // Crear una nueva columna destino con la tarea actualizada al final
+          const targetColumn = [
+            ...state.columns[newState],
+            { ...updatedTask, posicion: state.columns[newState].length + 1 }
+          ]
+
+          // Retornar el nuevo estado con ambas columnas actualizadas
+          return {
+            columns: {
+              ...state.columns,
+              [darggingTask.estado]: prevColumn,
+              [newState]: targetColumn.sort((a, b) => a.posicion - b.posicion) // Orden explícito
+            }
+          }
+        })
         try {
           //Api
           const response = await helpHTTP().patch(
@@ -251,39 +299,9 @@ export const useTasksStore = create((set, get) => ({
             { body: form }
           )
           if (JSON.stringify(response).includes('Error')) throw response
-
-          set((state) => {
-            // Filtrar la columna anterior para eliminar la tarea
-            const prevColumn = state.columns[darggingTask.estado].filter(
-              (item) => item.id !== darggingTask.id
-            )
-
-            for (let task of prevColumn) {
-              if (task.posicion > darggingTask.posicion) {
-                task.posicion -= 1
-              }
-            }
-
-            console.log(prevColumn)
-
-            // Crear una nueva columna destino con la tarea actualizada al final
-            const targetColumn = [
-              ...state.columns[newState],
-              { ...updatedTask, posicion: state.columns[newState].length + 1 }
-            ]
-
-            // Retornar el nuevo estado con ambas columnas actualizadas
-            return {
-              columns: {
-                ...state.columns,
-                [darggingTask.estado]: prevColumn,
-                [newState]: targetColumn.sort((a, b) => a.posicion - b.posicion) // Orden explícito
-              }
-            }
-          })
         } catch (error) {
           console.error(`Drop Update Task Error: ${error}`)
-          set({ columns: previousColumns })
+          set({ columns: previousState })
         }
       }
     }
@@ -295,6 +313,7 @@ export const useTasksStore = create((set, get) => ({
     const { columns, darggingTask } = get()
     const taskDropId = Number(e.target.parentNode.id)
     let newPosition = null
+    const previousState = structuredClone(columns)
 
     //Identificamos la tarea sobre la que se está haciendo el drop dentro de las columnas
     const { taskColumn, taskIndex, task } = helpTaskPosition(
@@ -329,63 +348,66 @@ export const useTasksStore = create((set, get) => ({
     console.log(newPosition)
 
     if (darggingTask && newPosition) {
+      //Actualilzacion optimista del estado
+      set((state) => {
+        const updatedTask = { ...darggingTask, estado: taskColumn }
+        // Filtrar la columna anterior para eliminar la tarea
+        const prevColumn = state.columns[darggingTask.estado].filter(
+          (item) => item.id !== darggingTask.id
+        )
+
+        for (let task of prevColumn) {
+          if (task.posicion > darggingTask.posicion) {
+            task.posicion -= 1
+          }
+        }
+
+        console.log(prevColumn)
+
+        // Crear una nueva columna destino con la tarea actualizada al final
+        const targetColumn = [
+          ...state.columns[taskColumn],
+          { ...updatedTask, posicion: newPosition }
+        ]
+
+        // Retornar el nuevo estado con ambas columnas actualizadas
+        if (darggingTask.estado !== taskColumn) {
+          return {
+            columns: {
+              ...state.columns,
+              [darggingTask.estado]: prevColumn,
+              [taskColumn]: targetColumn.sort((a, b) => a.posicion - b.posicion) // Orden explícito
+            }
+          }
+        } else {
+          return {
+            columns: {
+              ...state.columns,
+              [taskColumn]: [
+                ...prevColumn,
+                { ...updatedTask, posicion: newPosition }
+              ].sort((a, b) => a.posicion - b.posicion)
+            }
+          }
+        }
+      })
+
       try {
         const form = {
           idTarea: darggingTask.id,
           nuevoEstado: taskColumn,
           nuevaPosicion: newPosition
         }
+
         const response = await helpHTTP().post(
           'http://localhost:8080/kanban-app/mover',
           { body: form }
         )
         if (JSON.stringify(response).includes('Error')) throw response
-        set((state) => {
-          const updatedTask = { ...darggingTask, estado: taskColumn }
-          // Filtrar la columna anterior para eliminar la tarea
-          const prevColumn = state.columns[darggingTask.estado].filter(
-            (item) => item.id !== darggingTask.id
-          )
-
-          for (let task of prevColumn) {
-            if (task.posicion > darggingTask.posicion) {
-              task.posicion -= 1
-            }
-          }
-
-          console.log(prevColumn)
-
-          // Crear una nueva columna destino con la tarea actualizada al final
-          const targetColumn = [
-            ...state.columns[taskColumn],
-            { ...updatedTask, posicion: newPosition }
-          ]
-
-          // Retornar el nuevo estado con ambas columnas actualizadas
-          if (darggingTask.estado !== taskColumn) {
-            return {
-              columns: {
-                ...state.columns,
-                [darggingTask.estado]: prevColumn,
-                [taskColumn]: targetColumn.sort(
-                  (a, b) => a.posicion - b.posicion
-                ) // Orden explícito
-              }
-            }
-          } else {
-            return {
-              columns: {
-                ...state.columns,
-                [taskColumn]: [
-                  ...prevColumn,
-                  { ...updatedTask, posicion: newPosition }
-                ].sort((a, b) => a.posicion - b.posicion)
-              }
-            }
-          }
-        })
       } catch (error) {
         console.error(`Move Task Error: ${error}`)
+        //Volver al estado anterior
+        set({ columns: previousState })
       }
     }
   },
