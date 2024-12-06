@@ -52,7 +52,7 @@ export const TaskCard = ({
         dragStart(id)
       }}
     >
-      <h2 className=' font-bold'>{title}</h2>
+      <h2 className=' font-bold w-3/4'>{title}</h2>
       <span className=' text-sm translate-y-3 text-stone-400'>
         Descripción:
       </span>
@@ -62,16 +62,23 @@ export const TaskCard = ({
           Estado:
         </label>
         <select
-          className=' bg-transparent text-sm z-10'
+          className=' bg-transparent text-sm z-[1]'
           name='estado'
           id='taskState'
           defaultValue={stateTask}
           onChange={handleChangeSelect}
+          disabled={state === 'done'}
         >
-          <option className=' bg-[#1a1a1a] appearance-none' value='todo'>
+          <option
+            className={`${state === 'todo' || state === 'inProgress' || state === 'done' ? 'hidden' : 'block'} bg-[#1a1a1a] appearance-none'`}
+            value='todo'
+          >
             Por hacer
           </option>
-          <option className=' bg-[#1a1a1a] appearance-none' value='inProgress'>
+          <option
+            className={`${state === 'inProgress' || state === 'done' ? 'hidden' : 'block'} bg-[#1a1a1a] appearance-none'`}
+            value='inProgress'
+          >
             En curso
           </option>
           <option className=' bg-[#1a1a1a] appearance-none' value='done'>
@@ -89,17 +96,31 @@ export const TaskCard = ({
               : 'bg-[--high-color]'
         }  task-priority absolute w-2 top-0 bottom-0 left-0`}
       ></div>
-      <div className=' flex gap-2'>
-        <UpdateTask
-          id={id}
-          title={title}
-          description={description}
-          state={state}
-          priority={priority}
-          date={date}
-        />
+      <div
+        // className='cardUp absolute top-0 left-0 right-0 h-1/2 bg-blue-400 '
+        className='cardUp absolute top-0 left-0 right-0 h-1/2 '
+        onDrop={onDropCard}
+      ></div>
+      <div
+        // className='cardDown absolute bottom-[-4px] left-0 right-0 h-1/2 bg-green-300 '
+        className='cardDown absolute bottom-[-4px] left-0 right-0 h-1/2 '
+        onDrop={onDropCard}
+      ></div>
+      <div
+        className={`${state === 'done' ? 'hidden' : 'block'} absolute top-4 right-4 flex gap-2`}
+      >
+        <div className='flex items-center'>
+          <UpdateTask
+            id={id}
+            title={title}
+            description={description}
+            state={state}
+            priority={priority}
+            date={date}
+          />
+        </div>
         <button
-          className='z-10 '
+          className={`${state === 'inProgress' ? 'hidden' : 'block'}`}
           aria-label='Borrar Tarea'
           onClick={handleOpen}
         >
@@ -113,16 +134,6 @@ export const TaskCard = ({
           handleDelete={handleDelete}
         />
       </div>
-      <div
-        // className='cardUp absolute top-0 left-0 right-0 h-1/2 bg-blue-400 '
-        className='cardUp absolute top-0 left-0 right-0 h-1/2 '
-        onDrop={onDropCard}
-      ></div>
-      <div
-        // className='cardDown absolute bottom-[-4px] left-0 right-0 h-1/2 bg-green-300 '
-        className='cardDown absolute bottom-[-4px] left-0 right-0 h-1/2 '
-        onDrop={onDropCard}
-      ></div>
     </article>
   )
 }

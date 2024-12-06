@@ -74,6 +74,7 @@ export const UpdateProject = ({ title, description, id }) => {
           onKeyUp={handleKeyUp}
           onBlur={handleBlur}
           autoComplete='off'
+          maxLength={'40'}
         />
         {errors.nombreProyecto && (
           <span className='text-[#ff3445]'>{errors.nombreProyecto}</span>
@@ -91,6 +92,7 @@ export const UpdateProject = ({ title, description, id }) => {
           onChange={onInputChange}
           onKeyUp={handleKeyUp}
           onBlur={handleBlur}
+          maxLength={'70'}
         />
         {errors.descripciónProyecto && (
           <span className='text-[#ff3445]'>{errors.descripciónProyecto}</span>

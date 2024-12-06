@@ -92,6 +92,7 @@ export const UpdateTask = ({ id, title, description, state, priority }) => {
           onKeyUp={handleKeyUp}
           value={titulo}
           autoComplete='off'
+          maxLength={'30'}
         />
         {errors.titulo && (
           <span className='text-[#ff3445]'>{errors.titulo}</span>
@@ -111,6 +112,7 @@ export const UpdateTask = ({ id, title, description, state, priority }) => {
           onKeyUp={handleKeyUp}
           value={descripcion}
           autoComplete='off'
+          maxLength={'150'}
         ></textarea>
         {errors.descripcion && (
           <span className='text-[#ff3445]'>{errors.descripcion}</span>

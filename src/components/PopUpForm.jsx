@@ -21,11 +21,12 @@ export const PopUpForm = ({
         {OpenBtn}
       </button>
       <article
-        className={`${isVisible ? 'block' : 'hidden'} fixed top-0 left-0 w-full h-screen md:h-screen z-30 bg-[#242424] backdrop-blur-sm bg-opacity-50 flex justify-center items-center`}
+        className={`${isVisible ? 'flex' : 'hidden'} fixed top-0 left-0 w-full h-screen md:h-screen
+         bg-[#242424] backdrop-blur-sm bg-opacity-50 justify-center items-center z-30`}
       >
         <dialog
-          className='relative w-4/5 md:w-96 animate-fade p-10 shadow-lg
-        flex flex-col gap-4 rounded-md bg-[#212121]'
+          className='w-4/5 md:w-96 animate-fade p-10 shadow-lg
+        flex flex-col gap-4 rounded-md bg-[#212121] z-30'
         >
           <h3 className='self-center text-[var(--principal-color)] text-xl font-bold'>
             {title}
