@@ -44,7 +44,7 @@ export const TaskCard = ({
 
   return (
     <article
-      className='cardTask bg-[#1a1a1a] p-4 mb-1 relative animate-fade transition-all duration-500'
+      className='cardTask bg-[var(--card-color)] p-4 mb-1 relative animate-fade transition-all duration-500'
       draggable
       id={id}
       data-position={position}
@@ -52,7 +52,7 @@ export const TaskCard = ({
         dragStart(id)
       }}
     >
-      <h2 className=' font-bold w-3/4'>{title}</h2>
+      <h2 className=' font-bold'>{title}</h2>
       <span className=' text-sm translate-y-3 text-stone-400'>
         Descripción:
       </span>
@@ -70,18 +70,21 @@ export const TaskCard = ({
           disabled={state === 'done'}
         >
           <option
-            className={`${state === 'todo' || state === 'inProgress' || state === 'done' ? 'hidden' : 'block'} bg-[#1a1a1a] appearance-none'`}
+            className={`${state === 'todo' || state === 'inProgress' || state === 'done' ? 'hidden' : 'block'} bg-[var(--card-color)] appearance-none'`}
             value='todo'
           >
             Por hacer
           </option>
           <option
-            className={`${state === 'inProgress' || state === 'done' ? 'hidden' : 'block'} bg-[#1a1a1a] appearance-none'`}
+            className={`${state === 'inProgress' || state === 'done' ? 'hidden' : 'block'} bg-[var(--card-color)] appearance-none'`}
             value='inProgress'
           >
             En curso
           </option>
-          <option className=' bg-[#1a1a1a] appearance-none' value='done'>
+          <option
+            className=' bg-[var(--card-color)] appearance-none'
+            value='done'
+          >
             Terminado
           </option>
         </select>
@@ -89,12 +92,12 @@ export const TaskCard = ({
       <span className=' text-sm text-stone-400'>{date}</span>
       <div
         className={`${
-          priority === 'low'
-            ? 'bg-[var(--low-color)]'
-            : priority === 'medium'
-              ? 'bg-[--medium-color]'
-              : 'bg-[--high-color]'
-        }  task-priority absolute w-2 top-0 bottom-0 left-0`}
+          state === 'todo'
+            ? 'bg-[var(--todo-color)]'
+            : state === 'inProgress'
+              ? 'bg-[--inProgress-color]'
+              : 'bg-[--done-color]'
+        }  task-priority absolute w-[2px] top-2 bottom-2 left-1 rounded-full`}
       ></div>
       <div
         // className='cardUp absolute top-0 left-0 right-0 h-1/2 bg-blue-400 '
@@ -107,7 +110,7 @@ export const TaskCard = ({
         onDrop={onDropCard}
       ></div>
       <div
-        className={`${state === 'done' ? 'hidden' : 'block'} absolute top-4 right-4 flex gap-2`}
+        className={`${state === 'done' ? 'hidden' : 'block'} absolute bottom-4 right-4 flex gap-2`}
       >
         <div className='flex items-center'>
           <UpdateTask

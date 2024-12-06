@@ -16,15 +16,15 @@ export const KanbanBoard = () => {
   // }, [project])
 
   return (
-    <div className='Kanban-container w-full grid grid-cols-3 sm:gap-4 animate-fade min-h-screen'>
-      <div className='min-h-screen-mh-kanban py-4 px-1 border border-[#515151] rounded-md'>
-        <div className=' w-full mb-4'>
-          <h3 className='text-sm sm:text-xl font-bold text-center mb-4'>
+    <div className='Kanban-container w-full grid grid-cols-3 sm:gap-2 animate-fade min-h-screen'>
+      <div className='pb-4 rounded-[7px]'>
+        <div className=' w-full py-3 rounded-t-[5px] bg-[#141414]'>
+          <h3 className='text-sm sm:text-xl font-bold text-center text-sky-600'>
             Por Hacer
           </h3>
         </div>
         <div
-          className='columnBoard kanban-todo transition-all duration-300 min-h-screen-mh-kanban'
+          className='columnBoard kanban-todo transition-all duration-300 min-h-screen px-1 py-1 bg-[#191919] rounded-b-md '
           onDrop={onDropColumn}
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}
@@ -48,55 +48,63 @@ export const KanbanBoard = () => {
           <CreateTask />
         </div>
       </div>
-      <div
-        className='columnBoard kanban-inprogress min-h-screen-mh-kanban border border-[#515151] rounded-md py-4 px-1 transition-all duration-300'
-        onDrop={onDropColumn}
-        onDragOver={onDragOver}
-        onDragLeave={onDragLeave}
-      >
-        <h3 className='text-sm sm:text-xl font-bold text-center mb-4'>
-          En Curso
-        </h3>
-        {columns.inProgress.length > 0 &&
-          columns.inProgress
-            .sort((a, b) => a.posicion - b.posicion)
-            .map((tarea) => (
-              <TaskCard
-                key={tarea.id}
-                id={tarea.id}
-                title={tarea.titulo}
-                description={tarea.descripcion}
-                state={tarea.estado}
-                priority={tarea.prioridad}
-                date={tarea.fechaPendiente}
-                position={tarea.posicion}
-              />
-            ))}
+      <div className='pb-4 rounded-[7px]'>
+        <div className=' w-full py-3 rounded-t-[5px] bg-[#141414]'>
+          <h3 className='text-sm sm:text-xl font-bold text-center text-yellow-600'>
+            En Curso
+          </h3>
+        </div>
+        <div
+          className='columnBoard kanban-inprogress transition-all duration-300 min-h-screen px-1 py-1 bg-[#191919] rounded-b-md'
+          onDrop={onDropColumn}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+        >
+          {columns.inProgress.length > 0 &&
+            columns.inProgress
+              .sort((a, b) => a.posicion - b.posicion)
+              .map((tarea) => (
+                <TaskCard
+                  key={tarea.id}
+                  id={tarea.id}
+                  title={tarea.titulo}
+                  description={tarea.descripcion}
+                  state={tarea.estado}
+                  priority={tarea.prioridad}
+                  date={tarea.fechaPendiente}
+                  position={tarea.posicion}
+                />
+              ))}
+        </div>
       </div>
-      <div
-        className='columnBoard kanban-done min-h-screen-mh-kanban border border-[#515151] rounded-md py-4 px-1 transition-all duration-300'
-        onDrop={onDropColumn}
-        onDragOver={onDragOver}
-        onDragLeave={onDragLeave}
-      >
-        <h3 className='text-sm sm:text-xl font-bold text-center mb-4'>
-          Terminado
-        </h3>
-        {columns.done.length > 0 &&
-          columns.done
-            .sort((a, b) => a.posicion - b.posicion)
-            .map((tarea) => (
-              <TaskCard
-                key={tarea.id}
-                id={tarea.id}
-                title={tarea.titulo}
-                description={tarea.descripcion}
-                state={tarea.estado}
-                priority={tarea.prioridad}
-                date={tarea.fechaPendiente}
-                position={tarea.posicion}
-              />
-            ))}
+      <div className='pb-4 rounded-[7px]'>
+        <div className=' w-full py-3 rounded-t-[5px] bg-[#141414]'>
+          <h3 className='text-sm sm:text-xl font-bold text-center text-green-700'>
+            Terminado
+          </h3>
+        </div>
+        <div
+          className='columnBoard kanban-done transition-all duration-300 min-h-screen px-1 py-1 bg-[#191919] rounded-b-md'
+          onDrop={onDropColumn}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+        >
+          {columns.done.length > 0 &&
+            columns.done
+              .sort((a, b) => a.posicion - b.posicion)
+              .map((tarea) => (
+                <TaskCard
+                  key={tarea.id}
+                  id={tarea.id}
+                  title={tarea.titulo}
+                  description={tarea.descripcion}
+                  state={tarea.estado}
+                  priority={tarea.prioridad}
+                  date={tarea.fechaPendiente}
+                  position={tarea.posicion}
+                />
+              ))}
+        </div>
       </div>
     </div>
   )
