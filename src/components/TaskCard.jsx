@@ -89,6 +89,27 @@ export const TaskCard = ({
           </option>
         </select>
       </form>
+      <div className='flex gap-2 items-center'>
+        <span className='text-sm text-stone-400'>Prioridad: </span>
+        <span className='text-sm '>
+          {`${
+            priority === 'low'
+              ? 'Baja'
+              : priority === 'medium'
+                ? 'Media'
+                : 'Alta'
+          }`}
+        </span>{' '}
+        <div
+          className={`${
+            priority === 'low'
+              ? 'bg-[var(--low-color)]'
+              : priority === 'medium'
+                ? 'bg-[--medium-color]'
+                : 'bg-[--high-color]'
+          } h-3 w-1 rounded-full`}
+        ></div>
+      </div>
       <span className=' text-sm text-stone-400'>{date}</span>
       <div
         className={`${
