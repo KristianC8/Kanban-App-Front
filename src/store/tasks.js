@@ -45,14 +45,6 @@ export const useTasksStore = create((set, get) => ({
     //Agragar la ultima posicion a la tarea en la columna
     const newTask = { ...form, posicion: columns.todo.length + 1 }
 
-    //Estado Actualización optimista
-    set((state) => ({
-      columns: {
-        ...state.columns,
-        todo: [...state.columns.todo, newTask]
-      }
-    }))
-
     //Api
     try {
       set({ loadingTask: true })
@@ -60,6 +52,13 @@ export const useTasksStore = create((set, get) => ({
         body: newTask
       })
       if (JSON.stringify(response).includes('Error')) throw response
+      //Estado Actualización optimista
+      set((state) => ({
+        columns: {
+          ...state.columns,
+          todo: [...state.columns.todo, response]
+        }
+      }))
     } catch (error) {
       console.log(`Create Task Error: ${error}`)
       // Retorna al estado anterior

@@ -7,7 +7,7 @@ export const ProjectsPage = () => {
     <>
       <CreateProject />
       <h2 className='text-xl font-bold text-[var(--principal-color)] mb-4'>
-        PORYECTOS
+        PROYECTOS
       </h2>
       <ProjectsContainer />
     </>
