@@ -36,6 +36,8 @@ export const useTasksStore = create((set, get) => ({
       })
     } catch (error) {
       console.log(error)
+    } finally {
+      set({ loadingProject: false })
     }
   },
 
@@ -236,6 +238,17 @@ export const useTasksStore = create((set, get) => ({
   onDropColumn: async (e) => {
     e.preventDefault()
     const { darggingTask, columns } = get()
+    if (darggingTask.estado === 'done') return
+    if (
+      darggingTask.estado === 'inProgress' &&
+      e.target.classList.contains('kanban-todo')
+    )
+      return
+    if (
+      darggingTask.estado === 'todo' &&
+      e.target.classList.contains('kanban-done')
+    )
+      return
 
     const dropTargetClass = e.target.classList
     const columnMappings = {
@@ -312,6 +325,17 @@ export const useTasksStore = create((set, get) => ({
     const { columns, darggingTask } = get()
 
     if (darggingTask.id === Number(e.target.parentNode.id)) return
+    if (darggingTask.estado === 'done') return
+    if (
+      darggingTask.estado === 'inProgress' &&
+      e.target.parentNode.parentNode.classList.contains('kanban-todo')
+    )
+      return
+    if (
+      darggingTask.estado === 'todo' &&
+      e.target.parentNode.parentNode.classList.contains('kanban-done')
+    )
+      return
 
     const taskDropId = Number(e.target.parentNode.id)
     let newPosition = null

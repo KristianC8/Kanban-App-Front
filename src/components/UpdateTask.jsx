@@ -131,13 +131,22 @@ export const UpdateTask = ({ id, title, description, state, priority }) => {
             onBlur={handleBlur}
             value={estado}
           >
-            <option className=' appearance-none' value='todo'>
+            <option
+              className={`${state === 'todo' || state === 'inProgress' || state === 'done' ? 'hidden' : 'block'} appearance-none`}
+              value='todo'
+            >
               Por Hacer
             </option>
-            <option className=' appearance-none' value='inProgress'>
+            <option
+              className={`${state === 'inProgress' || state === 'done' ? 'hidden' : 'block'} appearance-none`}
+              value='inProgress'
+            >
               En curso
             </option>
-            <option className=' appearance-none' value='done'>
+            <option
+              className={`${state === 'todo' ? 'hidden' : 'block'} appearance-none`}
+              value='done'
+            >
               Terminado
             </option>
           </select>

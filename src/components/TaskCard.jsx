@@ -82,7 +82,7 @@ export const TaskCard = ({
             En curso
           </option>
           <option
-            className=' bg-[var(--card-color)] appearance-none'
+            className={`${state === 'todo' ? 'hidden' : 'block'} bg-[var(--card-color)] appearance-none`}
             value='done'
           >
             Terminado
