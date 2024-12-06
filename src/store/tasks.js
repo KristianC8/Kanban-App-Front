@@ -310,6 +310,9 @@ export const useTasksStore = create((set, get) => ({
     e.preventDefault()
 
     const { columns, darggingTask } = get()
+
+    if (darggingTask.id === Number(e.target.parentNode.id)) return
+
     const taskDropId = Number(e.target.parentNode.id)
     let newPosition = null
     const previousState = structuredClone(columns)
