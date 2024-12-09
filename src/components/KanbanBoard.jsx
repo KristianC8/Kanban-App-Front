@@ -24,7 +24,7 @@ export const KanbanBoard = () => {
           </h3>
         </div>
         <div
-          className='columnBoard kanban-todo transition-all duration-300 min-h-screen px-1 py-1 bg-[#191919] rounded-b-md '
+          className='columnBoard kanban-todo transition-all duration-300 h-[calc(100%-36px)] px-1 py-1 bg-[#191919] rounded-b-md '
           onDrop={onDropColumn}
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}
@@ -55,7 +55,7 @@ export const KanbanBoard = () => {
           </h3>
         </div>
         <div
-          className='columnBoard kanban-inprogress transition-all duration-300 min-h-screen px-1 py-1 bg-[#191919] rounded-b-md'
+          className='columnBoard kanban-inprogress transition-all duration-300 h-[calc(100%-36px)] px-1 py-1 bg-[#191919] rounded-b-md'
           onDrop={onDropColumn}
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}
@@ -84,7 +84,7 @@ export const KanbanBoard = () => {
           </h3>
         </div>
         <div
-          className='columnBoard kanban-done transition-all duration-300 min-h-screen px-1 py-1 bg-[#191919] rounded-b-md'
+          className='columnBoard kanban-done transition-all duration-300 h-[calc(100%-36px)] px-1 py-1 bg-[#191919] rounded-b-md'
           onDrop={onDropColumn}
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}

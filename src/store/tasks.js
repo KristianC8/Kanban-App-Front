@@ -287,8 +287,7 @@ export const useTasksStore = create((set, get) => ({
             }
           }
 
-          console.log(prevColumn)
-
+          // console.log(prevColumn)
           // Crear una nueva columna destino con la tarea actualizada al final
           const targetColumn = [
             ...state.columns[newState],
@@ -325,7 +324,11 @@ export const useTasksStore = create((set, get) => ({
     const { columns, darggingTask } = get()
 
     if (darggingTask.id === Number(e.target.parentNode.id)) return
-    if (darggingTask.estado === 'done') return
+    if (
+      darggingTask.estado === 'done' &&
+      !e.target.parentNode.parentNode.classList.contains('kanban-done')
+    )
+      return
     if (
       darggingTask.estado === 'inProgress' &&
       e.target.parentNode.parentNode.classList.contains('kanban-todo')
@@ -348,10 +351,10 @@ export const useTasksStore = create((set, get) => ({
     )
 
     if (e.target.classList.contains('cardUp')) {
-      console.log('up')
+      // console.log('up')
       // console.log('tarea:', task)
       if (taskIndex === 0) {
-        newPosition = columns[taskColumn][0].posicion - 0.01
+        newPosition = columns[taskColumn][0].posicion - 0.1
         // console.log('primero', newPosition)
       } else {
         newPosition =
@@ -359,7 +362,7 @@ export const useTasksStore = create((set, get) => ({
         // console.log('la nueva posicion es:', newPosition)
       }
     } else if (e.target.classList.contains('cardDown')) {
-      console.log('down')
+      // console.log('down')
       // console.log('tarea:', task)
       if (taskIndex === columns[taskColumn].length - 1) {
         newPosition =
@@ -371,7 +374,7 @@ export const useTasksStore = create((set, get) => ({
         // console.log('la nueva posicion es:', newPosition)
       }
     }
-    console.log(newPosition)
+    // console.log(newPosition)
 
     if (darggingTask && newPosition) {
       //Actualilzacion optimista del estado
@@ -384,11 +387,11 @@ export const useTasksStore = create((set, get) => ({
 
         for (let task of prevColumn) {
           if (task.posicion > darggingTask.posicion) {
-            task.posicion -= 1
+            task.posicion -= 1 // no esta bien//////////////////////////////
           }
         }
 
-        console.log(prevColumn)
+        // console.log(prevColumn)
 
         // Crear una nueva columna destino con la tarea actualizada al final
         const targetColumn = [
@@ -417,6 +420,8 @@ export const useTasksStore = create((set, get) => ({
           }
         }
       })
+
+      console.log(columns)
 
       try {
         const form = {
