@@ -1,35 +1,37 @@
 import { create } from 'zustand'
 import { helpHTTP } from '../helpers/helpHTTP'
+import endPoints from '../api/endpoints'
 
 export const useProjectsStore = create((set, get) => ({
   projects: null,
-  loading: false,
+  loadingFetch: false,
+  loadingCreate: false,
   fetchProjects: async () => {
-    set(() => ({ loading: true }))
+    set(() => ({ loadingFetch: true }))
     try {
-      const data = await helpHTTP().get(
-        'http://localhost:8080/kanban-app/proyectos'
-      )
+      const data = await helpHTTP().get(endPoints.projects.listAll)
       if (data.includes('Error')) throw data
       set({ projects: data })
     } catch (error) {
       console.log(error)
     } finally {
-      set(() => ({ loading: false }))
+      set(() => ({ loadingFetch: false }))
     }
   },
+
   addProject: async (endPoint, form) => {
-    set({ loading: true })
-    helpHTTP()
-      .post(endPoint, {
+    set(() => ({ loadingCreate: true }))
+    try {
+      const newProject = await helpHTTP().post(endPoint, {
         body: form
       })
-      .then((res) => {
-        if (JSON.stringify(res).includes('Error')) throw res
-        set((state) => ({ projects: [...state.projects, res] }))
-      })
-      .catch((err) => console.log(err))
-      .finally(set({ loading: false }))
+      if (JSON.stringify(newProject).includes('Error')) throw newProject
+      set((state) => ({ projects: [...state.projects, newProject] }))
+    } catch (error) {
+      console.log(error)
+    } finally {
+      set(() => ({ loadingCreate: false }))
+    }
   },
 
   updateProject: async (endPoint, form, id) => {
@@ -43,7 +45,6 @@ export const useProjectsStore = create((set, get) => ({
         const ProjectIndex = projects.findIndex((item) => item.id === id)
         const newProjects = structuredClone(projects)
         newProjects[ProjectIndex] = res
-        console.log(projects)
         set({ projects: newProjects })
       })
       .catch((err) => console.log(err))

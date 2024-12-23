@@ -5,7 +5,8 @@ import { useProjectsStore } from '../store/projects'
 export const ProjectsContainer = () => {
   const projects = useProjectsStore((state) => state.projects)
   const getProjects = useProjectsStore((state) => state.fetchProjects)
-  const isLoading = useProjectsStore((state) => state.loading)
+  const loadingFetch = useProjectsStore((state) => state.loadingFetch)
+  const loadingCreate = useProjectsStore((state) => state.loadingCreate)
 
   useEffect(() => {
     getProjects()
@@ -13,7 +14,7 @@ export const ProjectsContainer = () => {
 
   return (
     <div className='projects-container flex flex-col gap-4 sm:grid sm:grid-cols-[repeat(2,minmax(200px,_1fr))]  lg:grid-cols-[repeat(auto-fill,minmax(var(--width-card),_1fr))] gap-x-6 gap-y-4'>
-      {isLoading ? (
+      {loadingFetch ? (
         <p>cargando...</p>
       ) : projects === null ? (
         <p>No fue posilbe acceder a la API</p>
@@ -29,6 +30,7 @@ export const ProjectsContainer = () => {
           />
         ))
       )}
+      {loadingCreate && <div>Cargando</div>}
     </div>
   )
 }

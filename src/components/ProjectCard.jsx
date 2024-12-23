@@ -6,6 +6,7 @@ import { PopUpConfirm } from './PopUpConfirm'
 import { useNavigate } from 'react-router-dom'
 import { useConfirm } from '../hooks/useConfirm'
 import { useProjectsStore } from '../store/projects'
+import endPoints from '../api/endpoints'
 
 // eslint-disable-next-line react/prop-types
 export const ProjectCard = ({ title, description, id }) => {
@@ -14,8 +15,7 @@ export const ProjectCard = ({ title, description, id }) => {
   const { isVisible, handleOpen, handleClose } = useConfirm()
 
   const handleDelete = () => {
-    const deleteEndPoint = `http://localhost:8080/kanban-app/proyectos/${id}`
-    deleteProject(deleteEndPoint, id).then(() => handleClose())
+    deleteProject(endPoints.projects.delete(id), id).then(() => handleClose())
   }
 
   const navigate = useNavigate()

@@ -354,29 +354,31 @@ export const useTasksStore = create((set, get) => ({
       // console.log('up')
       // console.log('tarea:', task)
       if (taskIndex === 0) {
-        newPosition = columns[taskColumn][0].posicion - 0.1
-        // console.log('primero', newPosition)
+        newPosition = 0
+        console.log('primero', newPosition)
       } else {
-        newPosition =
-          (columns[taskColumn][taskIndex - 1].posicion + task.posicion) / 2
-        // console.log('la nueva posicion es:', newPosition)
+        newPosition = task.posicion
+        // (columns[taskColumn][taskIndex - 1].posicion + task.posicion) / 2
+        console.log('la nueva posicion es:', newPosition)
       }
     } else if (e.target.classList.contains('cardDown')) {
       // console.log('down')
       // console.log('tarea:', task)
       if (taskIndex === columns[taskColumn].length - 1) {
         newPosition =
-          columns[taskColumn][columns[taskColumn].length - 1].posicion + 1
-        // console.log('ultimo', newPosition)
+          darggingTask.estado === taskColumn
+            ? columns[taskColumn][columns[taskColumn].length - 1].posicion
+            : columns[taskColumn][columns[taskColumn].length - 1].posicion + 1
+        console.log('ultimo', newPosition)
       } else {
-        newPosition =
-          (task.posicion + columns[taskColumn][taskIndex + 1].posicion) / 2
-        // console.log('la nueva posicion es:', newPosition)
+        newPosition = task.posicion + 1
+        // (task.posicion + columns[taskColumn][taskIndex + 1].posicion) / 2
+        console.log('la nueva posicion es:', newPosition)
       }
     }
     // console.log(newPosition)
 
-    if (darggingTask && newPosition) {
+    if (darggingTask && (newPosition || newPosition === 0)) {
       //Actualilzacion optimista del estado
       set((state) => {
         const updatedTask = { ...darggingTask, estado: taskColumn }
@@ -387,15 +389,21 @@ export const useTasksStore = create((set, get) => ({
 
         for (let task of prevColumn) {
           if (task.posicion > darggingTask.posicion) {
-            task.posicion -= 1 // no esta bien//////////////////////////////
+            task.posicion -= 1
           }
         }
 
-        // console.log(prevColumn)
-
         // Crear una nueva columna destino con la tarea actualizada al final
-        const targetColumn = [
-          ...state.columns[taskColumn],
+        let targetColumn = state.columns[taskColumn]
+
+        for (let task of targetColumn) {
+          if (task.posicion >= newPosition) {
+            task.posicion += 1
+          }
+        }
+
+        targetColumn = [
+          ...targetColumn,
           { ...updatedTask, posicion: newPosition }
         ]
 

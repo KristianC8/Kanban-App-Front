@@ -1,6 +1,7 @@
 import { useForm } from '../hooks/useForm'
 import { useProjectsStore } from '../store/projects'
 import { PopUpForm } from './PopUpForm'
+import endPoints from '../api/endpoints'
 
 export const CreateProject = () => {
   const initialForm = {
@@ -39,12 +40,11 @@ export const CreateProject = () => {
   const { nombreProyecto, descripciónProyecto } = formstate
 
   const addProject = useProjectsStore((state) => state.addProject)
-  const endPointCreate = 'http://localhost:8080/kanban-app/proyectos'
 
   const handleSubmit = (e) => {
     e.preventDefault()
     initForm()
-    addProject(endPointCreate, formstate).then(() => {
+    addProject(endPoints.projects.create, formstate).then(() => {
       initValidation()
     })
   }
