@@ -1,4 +1,4 @@
-const BASE_URL = 'https://kanban-api-djkd.onrender.com'
+const BASE_URL = import.meta.env.VITE_API_URL
 
 const endPoints = {
   projects: {
@@ -8,7 +8,14 @@ const endPoints = {
     byId: (id) => `${BASE_URL}/kanban-app/tareas/${id}`,
     delete: (id) => `${BASE_URL}/kanban-app/proyectos/${id}`
   },
-  tasks: `${BASE_URL}/alfd`
+  tasks: {
+    getProject: (id) => `${BASE_URL}/kanban-app/proyectos/${id}`,
+    create: `${BASE_URL}/kanban-app/tareas`,
+    updateState: (id) => `${BASE_URL}/kanban-app/estado/tareas/${id}`,
+    delete: (id) => `${BASE_URL}/kanban-app/tareas/${id}`,
+    update: (id) => `${BASE_URL}/kanban-app/tareas/${id}`,
+    move: `${BASE_URL}/kanban-app/mover`
+  }
 }
 
 export default endPoints
