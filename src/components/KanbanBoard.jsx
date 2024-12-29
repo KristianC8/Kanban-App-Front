@@ -29,7 +29,6 @@ export const KanbanBoard = () => {
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}
         >
-          {loadingTask && <span>Agregando Tarea...</span>}
           {columns.todo.length > 0 &&
             columns.todo
               .sort((a, b) => a.posicion - b.posicion)
@@ -45,6 +44,7 @@ export const KanbanBoard = () => {
                   position={tarea.posicion}
                 />
               ))}
+          {loadingTask && <p>Agregando Tarea...</p>}
           <CreateTask />
         </div>
       </div>
