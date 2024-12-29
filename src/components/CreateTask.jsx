@@ -1,6 +1,7 @@
 import { PopUpForm } from './PopUpForm'
 import { useForm } from '../hooks/useForm'
 import { useTasksStore } from '../store/tasks'
+import endPoints from '../api/endpoints'
 
 export const CreateTask = () => {
   const project = useTasksStore((state) => state.project)
@@ -53,10 +54,10 @@ export const CreateTask = () => {
   const { titulo, descripcion, estado, prioridad, fechaPendiente } = formstate
 
   const handelSubmit = async (e) => {
-    const endpointAdd = `http://localhost:8080/kanban-app/tareas`
+    // const endpointAdd = `http://localhost:8080/kanban-app/tareas`
     e.preventDefault()
     initForm()
-    createTask(endpointAdd, formstate).then(() => {
+    createTask(endPoints.tasks.create, formstate).then(() => {
       initValidation()
     })
   }
