@@ -4,6 +4,7 @@ import { useConfirm } from '../hooks/useConfirm'
 import { useState } from 'react'
 import { UpdateTask } from './UpdateTask'
 import { useTasksStore } from '../store/tasks'
+import endPoints from '../api/endpoints'
 
 /* eslint-disable react/prop-types */
 export const TaskCard = ({
@@ -31,13 +32,11 @@ export const TaskCard = ({
 
   const handleSubmit = (e, form) => {
     e.preventDefault()
-    const updateStateEndpoint = `http://localhost:8080/kanban-app/estado/tareas/${id}`
-    updateStateTask(updateStateEndpoint, form, id)
+    updateStateTask(endPoints.tasks.updateState(id), form, id)
   }
 
   const handleDelete = () => {
-    const deleteEndPoint = `http://localhost:8080/kanban-app/tareas/${id}`
-    deleteTask(deleteEndPoint, id).then(() => handleClose())
+    deleteTask(endPoints.tasks.delete(id), id).then(() => handleClose())
   }
 
   const { isVisible, handleOpen, handleClose } = useConfirm()
