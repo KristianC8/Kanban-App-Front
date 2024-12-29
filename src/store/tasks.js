@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { helpHTTP } from '../helpers/helpHTTP'
 import { helpTaskPosition } from '../helpers/helpTaskPosition'
+import endPoints from '../api/endpoints'
 
 export const useTasksStore = create((set, get) => ({
   project: null,
@@ -17,9 +18,7 @@ export const useTasksStore = create((set, get) => ({
     set({ loadingProject: true })
     try {
       //Api
-      const data = await helpHTTP().get(
-        `http://localhost:8080/kanban-app/proyectos/${id}`
-      )
+      const data = await helpHTTP().get(endPoints.tasks.getProject(id))
       if (JSON.stringify(data).includes('Error')) throw data
       set({
         project: data,
@@ -306,7 +305,7 @@ export const useTasksStore = create((set, get) => ({
         try {
           //Api
           const response = await helpHTTP().patch(
-            `http://localhost:8080/kanban-app/estado/tareas/${darggingTask.id}`,
+            endPoints.tasks.updateState(darggingTask.id),
             { body: form }
           )
           if (JSON.stringify(response).includes('Error')) throw response
@@ -438,10 +437,9 @@ export const useTasksStore = create((set, get) => ({
           nuevaPosicion: newPosition
         }
 
-        const response = await helpHTTP().post(
-          'http://localhost:8080/kanban-app/mover',
-          { body: form }
-        )
+        const response = await helpHTTP().post(endPoints.tasks.move, {
+          body: form
+        })
         if (JSON.stringify(response).includes('Error')) throw response
       } catch (error) {
         console.error(`Move Task Error: ${error}`)
