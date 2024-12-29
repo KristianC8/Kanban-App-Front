@@ -4,6 +4,7 @@ import { useForm } from '../hooks/useForm'
 // import { useTasksContext } from '../hooks/useTasksContext'
 import { EditIcon } from './icons/EditIcon'
 import { useTasksStore } from '../store/tasks'
+import endPoints from '../api/endpoints'
 
 export const UpdateTask = ({ id, title, description, state, priority }) => {
   // const { project, updateTask } = useTasksContext()
@@ -57,11 +58,8 @@ export const UpdateTask = ({ id, title, description, state, priority }) => {
   const { titulo, descripcion, estado, prioridad, fechaPendiente } = formstate
 
   const handelSubmit = (e) => {
-    // console.log(JSON.stringify(formstate))
-    const endpointUpdate = `http://localhost:8080/kanban-app/tareas/${id}`
     e.preventDefault()
-    // initForm()
-    updateTask(endpointUpdate, formstate, id).then(() => {
+    updateTask(endPoints.tasks.update(id), formstate, id).then(() => {
       initValidation()
     })
   }
