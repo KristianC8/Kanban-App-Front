@@ -16,6 +16,9 @@ export const TaskCard = ({
   date,
   position
 }) => {
+  const [isUp, setIsUp] = useState(null)
+  const [isDown, setIsDown] = useState(null)
+
   const deleteTask = useTasksStore((state) => state.deleteTask)
   const updateStateTask = useTasksStore((state) => state.updateStateTask)
   const [stateTask, setStateTask] = useState(state)
@@ -41,9 +44,26 @@ export const TaskCard = ({
 
   const { isVisible, handleOpen, handleClose } = useConfirm()
 
+  const handleOver = (e) => {
+    e.preventDefault()
+    if (e.target.classList.contains('cardUp')) {
+      console.log('up')
+      if (!isUp) setIsUp(true)
+    } else if (e.target.classList.contains('cardDown')) {
+      if (!isDown) setIsDown(true)
+      console.log('down')
+    }
+  }
+
+  const handleLeave = (e) => {
+    e.preventDefault()
+    setIsUp(false)
+    setIsDown(false)
+  }
+
   return (
     <article
-      className='cardTask bg-[var(--card-color)] p-4 mb-1 relative animate-fade transition-all duration-500'
+      className={`${isUp ? ' translate-y-1' : isDown ? 'translate-y-[-4px]' : ''} cardTask bg-[var(--card-color)] p-4 mb-1 relative animate-fade transition-all duration-500`}
       draggable
       id={id}
       data-position={position}
@@ -122,12 +142,22 @@ export const TaskCard = ({
       <div
         // className='cardUp absolute top-0 left-0 right-0 h-1/2 bg-blue-400 '
         className='cardUp absolute top-0 left-0 right-0 h-1/2 '
-        onDrop={onDropCard}
+        onDrop={(e) => {
+          onDropCard(e)
+          setIsUp(false)
+        }}
+        onDragOver={handleOver}
+        onDragLeave={handleLeave}
       ></div>
       <div
         // className='cardDown absolute bottom-[-4px] left-0 right-0 h-1/2 bg-green-300 '
         className='cardDown absolute bottom-[-4px] left-0 right-0 h-1/2 '
-        onDrop={onDropCard}
+        onDrop={(e) => {
+          onDropCard(e)
+          setIsDown(false)
+        }}
+        onDragOver={handleOver}
+        onDragLeave={handleLeave}
       ></div>
       <div
         className={`${state === 'done' ? 'hidden' : 'block'} absolute bottom-4 right-4 flex gap-2`}
