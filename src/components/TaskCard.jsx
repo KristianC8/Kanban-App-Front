@@ -57,8 +57,8 @@ export const TaskCard = ({
 
   const handleLeave = (e) => {
     e.preventDefault()
-    setIsUp(false)
-    setIsDown(false)
+    if (isUp) setIsUp(false)
+    if (isDown) setIsDown(false)
   }
 
   return (
@@ -144,7 +144,7 @@ export const TaskCard = ({
         className='cardUp absolute top-0 left-0 right-0 h-1/2 '
         onDrop={(e) => {
           onDropCard(e)
-          setIsUp(false)
+          if (isUp) setIsUp(false)
         }}
         onDragOver={handleOver}
         onDragLeave={handleLeave}
@@ -154,7 +154,7 @@ export const TaskCard = ({
         className='cardDown absolute bottom-[-4px] left-0 right-0 h-1/2 '
         onDrop={(e) => {
           onDropCard(e)
-          setIsDown(false)
+          if (isDown) setIsDown(false)
         }}
         onDragOver={handleOver}
         onDragLeave={handleLeave}
