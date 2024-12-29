@@ -47,11 +47,9 @@ export const TaskCard = ({
   const handleOver = (e) => {
     e.preventDefault()
     if (e.target.classList.contains('cardUp')) {
-      console.log('up')
       if (!isUp) setIsUp(true)
     } else if (e.target.classList.contains('cardDown')) {
       if (!isDown) setIsDown(true)
-      console.log('down')
     }
   }
 
