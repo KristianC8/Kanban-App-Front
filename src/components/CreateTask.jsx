@@ -2,6 +2,7 @@ import { PopUpForm } from './PopUpForm'
 import { useForm } from '../hooks/useForm'
 import { useTasksStore } from '../store/tasks'
 import endPoints from '../api/endpoints'
+import { AddBtn } from './icons/AddBtn'
 
 export const CreateTask = () => {
   const project = useTasksStore((state) => state.project)
@@ -65,10 +66,9 @@ export const CreateTask = () => {
   return (
     <PopUpForm
       title={'Crear Tarea'}
-      stylesBtn={
-        'p-3 mx-2 mt-4 bg-gradient-to-r from-[var(--principal-color)] to-[#e03c3c] rounded-md font-bold'
-      }
-      OpenBtn={'Crear Tarea'}
+      titelBtn={'Nueva Tarea'}
+      stylesBtn={'ml-2 mt-2'}
+      OpenBtn={<AddBtn color={'#dc2626'} />}
       textBtn={'Crear'}
       errors={errors}
       initalValidation={initialValidation}
