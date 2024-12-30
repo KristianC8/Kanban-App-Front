@@ -2,6 +2,7 @@ import { useForm } from '../hooks/useForm'
 import { useProjectsStore } from '../store/projects'
 import { PopUpForm } from './PopUpForm'
 import endPoints from '../api/endpoints'
+import { AddBtn } from './icons/AddBtn'
 
 export const CreateProject = () => {
   const initialForm = {
@@ -53,10 +54,9 @@ export const CreateProject = () => {
     <>
       <PopUpForm
         title={'Crear Proyecto'}
-        stylesBtn={
-          'p-3 bg-gradient-to-r from-[var(--principal-color)] to-[#e03c3c] mb-4 rounded-md font-bold'
-        }
-        OpenBtn={'Crear Proyecto'}
+        titelBtn={'Nuevo Proyecto'}
+        stylesBtn={'mb-4'}
+        OpenBtn={<AddBtn color={'#dc2626'} />}
         textBtn={'Crear'}
         handleSubmit={handleSubmit}
         functionClose={initForm}
