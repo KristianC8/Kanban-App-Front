@@ -3,6 +3,9 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      aspectRatio: {
+        np: '2052 / 1640'
+      },
       minHeight: {
         'screen-mh': 'calc(100vh - 3rem)',
         'screen-mh-kanban': 'calc(100vh - 7.75rem)'
