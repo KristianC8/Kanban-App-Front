@@ -5,6 +5,7 @@ export const PopUpForm = ({
   children,
   stylesBtn,
   title,
+  titelBtn,
   OpenBtn,
   textBtn,
   handleSubmit,
@@ -17,7 +18,11 @@ export const PopUpForm = ({
 
   return (
     <>
-      <button className={stylesBtn} onClick={handleBtnOpen}>
+      <button
+        className={`${stylesBtn}`}
+        onClick={handleBtnOpen}
+        title={titelBtn}
+      >
         {OpenBtn}
       </button>
       <article
