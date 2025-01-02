@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { KanbanIcon } from './icons/KanbanIcon'
-import { IsAvailable } from './isAvailable'
+import { IsAvailable } from './IsAvailable'
 
 export const Header = () => {
   return (
