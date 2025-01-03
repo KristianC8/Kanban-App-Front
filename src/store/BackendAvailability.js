@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import endPoints from '../api/endpoints'
 
 export const useBackendAvailabilityStore = create((set) => ({
   isAvailable: false,
@@ -19,9 +20,7 @@ export const useBackendAvailabilityStore = create((set) => ({
 
     while (!isAvailable) {
       try {
-        const availability = await fetchWithTimeout(
-          'https://kanban-api-djkd.onrender.com/health'
-        )
+        const availability = await fetchWithTimeout(endPoints.health)
         if (!availability.ok) throw new Error('Servidor no disponible')
         isAvailable = true
         set({ isAvailable: true })
@@ -34,9 +33,7 @@ export const useBackendAvailabilityStore = create((set) => ({
   },
   mantainActive: async () => {
     try {
-      const response = await fetch(
-        'https://kanban-api-djkd.onrender.com/health'
-      )
+      const response = await fetch(endPoints.health)
       if (!response.ok) throw new Error('No es posible mantener activa la API')
       // console.log('manteniendo')
     } catch (error) {

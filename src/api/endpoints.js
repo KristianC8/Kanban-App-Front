@@ -15,7 +15,8 @@ const endPoints = {
     delete: (id) => `${BASE_URL}/kanban-app/tareas/${id}`,
     update: (id) => `${BASE_URL}/kanban-app/tareas/${id}`,
     move: `${BASE_URL}/kanban-app/mover`
-  }
+  },
+  health: `${BASE_URL}/health`
 }
 
 export default endPoints
