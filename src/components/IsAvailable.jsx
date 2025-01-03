@@ -24,7 +24,7 @@ export const IsAvailable = () => {
   return (
     <>
       <div className='flex gap-2 items-center'>
-        Backend
+        Servidor
         <div
           aria-label='disponiblidad del backend'
           className={`h-3 w-3 ${isAvailable ? 'bg-green-500' : 'bg-red-500'} rounded-full`}
