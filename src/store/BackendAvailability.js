@@ -38,9 +38,10 @@ export const useBackendAvailabilityStore = create((set) => ({
         'https://kanban-api-djkd.onrender.com/health'
       )
       if (!response.ok) throw new Error('No es posible mantener activa la API')
-      console.log('manteniendo')
+      // console.log('manteniendo')
     } catch (error) {
       console.log(error)
+      set({ isAvailable: false })
     }
   }
 }))
