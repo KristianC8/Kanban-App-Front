@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { UpdateTask } from './UpdateTask'
 import { useTasksStore } from '../store/tasks'
 import endPoints from '../api/endpoints'
+import { MobileTask } from './MobileTask'
 
 /* eslint-disable react/prop-types */
 export const TaskCard = ({
@@ -70,10 +71,12 @@ export const TaskCard = ({
       }}
     >
       <h2 className=' font-bold'>{title}</h2>
-      <span className=' text-sm translate-y-3 text-stone-400'>
-        Descripción:
-      </span>
-      <p className=' text-sm text-pretty'>{description}</p>
+      <div className='hidden sm:block'>
+        <span className=' text-sm translate-y-3 text-stone-400'>
+          Descripción:
+        </span>
+        <p className=' text-sm text-pretty'>{description}</p>
+      </div>
       <form className=' flex md:gap-3 flex-wrap'>
         <label className=' text-sm text-stone-400' htmlFor='taskState'>
           Estado:
@@ -106,7 +109,7 @@ export const TaskCard = ({
           </option>
         </select>
       </form>
-      <div className='flex gap-2 items-center'>
+      <div className='hidden sm:flex gap-2 items-center'>
         <span className='text-sm text-stone-400'>Prioridad: </span>
         <span className='text-sm '>
           {`${
@@ -139,7 +142,7 @@ export const TaskCard = ({
       ></div>
       <div
         // className='cardUp absolute top-0 left-0 right-0 h-1/2 bg-blue-400 '
-        className='cardUp absolute top-0 left-0 right-0 h-1/2 '
+        className='hidden sm:block cardUp absolute top-0 left-0 right-0 h-1/2 '
         onDrop={(e) => {
           onDropCard(e)
           if (isUp) setIsUp(false)
@@ -149,7 +152,7 @@ export const TaskCard = ({
       ></div>
       <div
         // className='cardDown absolute bottom-[-4px] left-0 right-0 h-1/2 bg-green-300 '
-        className='cardDown absolute bottom-[-4px] left-0 right-0 h-1/2 '
+        className='hidden sm:block cardDown absolute bottom-[-4px] left-0 right-0 h-1/2 '
         onDrop={(e) => {
           onDropCard(e)
           if (isDown) setIsDown(false)
@@ -158,7 +161,7 @@ export const TaskCard = ({
         onDragLeave={handleLeave}
       ></div>
       <div
-        className={`${state === 'done' ? 'hidden' : 'block'} absolute bottom-4 right-4 flex gap-2`}
+        className={` hidden sm:flex  ${state === 'done' ? 'hidden' : 'flex'} absolute bottom-4 right-4 gap-2`}
       >
         <div className='flex items-center'>
           <UpdateTask
@@ -185,6 +188,13 @@ export const TaskCard = ({
           handleDelete={handleDelete}
         />
       </div>
+      <MobileTask
+        title={title}
+        description={description}
+        state={state}
+        priority={priority}
+        date={date}
+      />
     </article>
   )
 }
