@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { KanbanIcon } from './icons/KanbanIcon'
-import { IsAvailable } from './IsAvailable'
+import { IsReady } from './IsReady'
 
 export const Header = () => {
   return (
@@ -12,7 +12,7 @@ export const Header = () => {
         <KanbanIcon />
         <h1 className=' text-2xl font-bold'>KANBAN APP</h1>
       </Link>
-      <IsAvailable />
+      <IsReady />
     </header>
   )
 }
