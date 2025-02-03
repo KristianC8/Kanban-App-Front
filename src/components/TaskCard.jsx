@@ -130,7 +130,7 @@ export const TaskCard = ({
           } h-3 w-1 rounded-full`}
         ></div>
       </div>
-      <span className=' text-sm text-stone-400'>{date}</span>
+      <span className=' sm:text-[12px] md:text-sm text-stone-400'>{date}</span>
       <div
         className={`${
           state === 'todo'
@@ -161,7 +161,7 @@ export const TaskCard = ({
         onDragLeave={handleLeave}
       ></div>
       <div
-        className={` hidden sm:flex  ${state === 'done' ? 'hidden' : 'flex'} absolute bottom-4 right-4 gap-2`}
+        className={`hidden sm:${state === 'done' ? 'hidden' : 'flex'} absolute bottom-4 right-4 gap-2`}
       >
         <div className='flex items-center'>
           <UpdateTask
