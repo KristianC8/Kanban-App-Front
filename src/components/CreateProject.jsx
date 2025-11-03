@@ -68,7 +68,7 @@ export const CreateProject = () => {
             Nombre del Proyecto:
           </label>
           <input
-            className='text-[#c1c1c1] px-2 py-1 bg-[#212121] outline-none border-b border-[#303030] focus:border-[var(--principal-color)] h-fit'
+            className='text-[var(--input-text)] px-2 py-1 bg-[var(--popup-color)] outline-none border-b border-[#303030] focus:border-[var(--principal-color)] h-fit'
             type='text'
             name='nombreProyecto'
             id='nombreProyecto'
@@ -92,7 +92,7 @@ export const CreateProject = () => {
             Descripción:
           </label>
           <textarea
-            className='text-[#c1c1c1] px-2 py-1 bg-[#212121] outline-none border-b border-[#303030] focus:border-[var(--principal-color)] resize-none h-fit'
+            className='text-[var(--input-text)] px-2 py-1 bg-[var(--popup-color)] outline-none border-b border-[#303030] focus:border-[var(--principal-color)] resize-none h-fit'
             name='descripciónProyecto'
             id='descripciónProyecto'
             placeholder='Describe tu proyecto de forma breve'
