@@ -31,7 +31,7 @@ export const PopUpForm = ({
       >
         <dialog
           className='w-4/5 md:w-96 animate-fade p-10 shadow-lg
-        flex flex-col gap-4 rounded-md bg-[#212121] z-30'
+        flex flex-col gap-4 rounded-md bg-[var(--popup-color)] z-30'
         >
           <h3 className='self-center text-[var(--principal-color)] text-xl font-bold'>
             {title}
@@ -48,7 +48,7 @@ export const PopUpForm = ({
               </button>
               <button
                 type='submit'
-                className='px-4 py-2 bg-primary rounded bg-[var(--principal-color)] disabled:bg-[#420b0b]'
+                className='px-4 py-2 bg-primary rounded bg-[var(--principal-color)] disabled:bg-[#420b0b] text-[#fafafa]'
                 onClick={handleClosePopup}
                 disabled={
                   initalValidation === false || Object.keys(errors).length !== 0
