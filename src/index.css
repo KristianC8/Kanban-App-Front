@@ -19,6 +19,12 @@
   --inProgress-color: #ca8a04;
   --done-color: #15803d;
   --card-color: #242424;
+  --project-color: #141414;
+  --accent-color: #989898;
+  --popup-color: #212121;
+  --input-text: #c1c1c1;
+  --board-title-color: #141414;
+  --board-body-color: #191919;
   /* --card-color: #1a1a1a; */
 }
 
@@ -52,8 +58,19 @@ body {
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #ffffff;
+    background-color: #d8d8d8;
+      --card-color: #f0f0f0;
+      --project-color: #f0f0f0;
+      --accent-color: #1a2837;
+      --popup-color: #f0f0f0;
+      --input-text: #386991;
+      --board-title-color: #c0c0c0;
+      --board-body-color: #d1d1d1;
+      --todo-color: #0c4d6e;
+      --inProgress-color: #855f0e;
+      --done-color: #14532c;
   }
+
 }
 
 @tailwind base;
