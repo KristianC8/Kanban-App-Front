@@ -18,13 +18,13 @@ export const KanbanBoard = () => {
   return (
     <div className='Kanban-container w-full grid grid-cols-3 sm:gap-2 animate-fade min-h-screen'>
       <div className='pb-4 rounded-[7px]'>
-        <div className=' w-full py-3 rounded-t-[5px] bg-[#141414]'>
-          <h3 className='text-sm sm:text-xl font-bold text-center text-sky-600'>
+        <div className=' w-full py-3 rounded-t-[5px] bg-[var(--board-title-color)]'>
+          <h3 className='text-sm sm:text-xl font-bold text-center text-[var(--todo-color)]'>
             Por Hacer
           </h3>
         </div>
         <div
-          className='columnBoard kanban-todo transition-all duration-300 h-[calc(100%-36px)] px-1 py-1 bg-[#191919] rounded-b-md '
+          className='columnBoard kanban-todo transition-all duration-300 h-[calc(100%-36px)] px-1 py-1 bg-[var(--board-body-color)] rounded-b-md '
           onDrop={onDropColumn}
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}
@@ -49,13 +49,13 @@ export const KanbanBoard = () => {
         </div>
       </div>
       <div className='pb-4 rounded-[7px]'>
-        <div className=' w-full py-3 rounded-t-[5px] bg-[#141414]'>
-          <h3 className='text-sm sm:text-xl font-bold text-center text-yellow-600'>
+        <div className=' w-full py-3 rounded-t-[5px] bg-[var(--board-title-color)]'>
+          <h3 className='text-sm sm:text-xl font-bold text-center text-[var(--inProgress-color)]'>
             En Curso
           </h3>
         </div>
         <div
-          className='columnBoard kanban-inprogress transition-all duration-300 h-[calc(100%-36px)] px-1 py-1 bg-[#191919] rounded-b-md'
+          className='columnBoard kanban-inprogress transition-all duration-300 h-[calc(100%-36px)] px-1 py-1 bg-[var(--board-body-color)] rounded-b-md'
           onDrop={onDropColumn}
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}
@@ -78,13 +78,13 @@ export const KanbanBoard = () => {
         </div>
       </div>
       <div className='pb-4 rounded-[7px]'>
-        <div className=' w-full py-3 rounded-t-[5px] bg-[#141414]'>
-          <h3 className='text-sm sm:text-xl font-bold text-center text-green-700'>
+        <div className=' w-full py-3 rounded-t-[5px] bg-[var(--board-title-color)]'>
+          <h3 className='text-sm sm:text-xl font-bold text-center text-[var(--done-color)]'>
             Terminado
           </h3>
         </div>
         <div
-          className='columnBoard kanban-done transition-all duration-300 h-[calc(100%-36px)] px-1 py-1 bg-[#191919] rounded-b-md'
+          className='columnBoard kanban-done transition-all duration-300 h-[calc(100%-36px)] px-1 py-1 bg-[var(--board-body-color)] rounded-b-md'
           onDrop={onDropColumn}
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}

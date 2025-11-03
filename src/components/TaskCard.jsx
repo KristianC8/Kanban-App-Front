@@ -72,13 +72,16 @@ export const TaskCard = ({
     >
       <h2 className=' font-bold'>{title}</h2>
       <div className='hidden sm:block'>
-        <span className=' text-sm translate-y-3 text-stone-400'>
+        <span className=' text-sm translate-y-3 text-[var(--accent-color)] font-bold'>
           Descripción:
         </span>
         <p className=' text-sm text-pretty'>{description}</p>
       </div>
       <form className=' flex md:gap-3 flex-wrap'>
-        <label className=' text-sm text-stone-400' htmlFor='taskState'>
+        <label
+          className=' text-sm text-[var(--accent-color)] font-bold'
+          htmlFor='taskState'
+        >
           Estado:
         </label>
         <select
@@ -110,7 +113,9 @@ export const TaskCard = ({
         </select>
       </form>
       <div className='hidden sm:flex gap-2 items-center'>
-        <span className='text-sm text-stone-400'>Prioridad: </span>
+        <span className='text-sm text-[var(--accent-color)] font-bold'>
+          Prioridad:{' '}
+        </span>
         <span className='text-sm '>
           {`${
             priority === 'low'
@@ -130,7 +135,9 @@ export const TaskCard = ({
           } h-3 w-1 rounded-full`}
         ></div>
       </div>
-      <span className=' sm:text-[12px] md:text-sm text-stone-400'>{date}</span>
+      <span className=' sm:text-[12px] md:text-sm text-[var(--accent-color)] font-bold'>
+        {date}
+      </span>
       <div
         className={`${
           state === 'todo'

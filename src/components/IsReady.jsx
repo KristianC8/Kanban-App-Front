@@ -32,16 +32,19 @@ export const IsReady = () => {
         ></div>
       </div>
       <article
-        className={`${isAvailable ? 'hidden' : 'block'} fixed sm:top-[44px] top-[49px] left-0 w-full h-screen md:h-screen z-30 bg-[#242424] backdrop-blur-sm bg-opacity-90 flex justify-center items-center`}
+        className={`${isAvailable ? 'hidden' : 'block'} fixed sm:top-[47px] top-[52px] left-0 w-full h-screen md:h-screen z-30 bg-[var(--popup-color)] backdrop-blur-sm bg-opacity-90 flex justify-center items-center`}
       >
         <dialog
-          className='relative w-4/5 md:w-96 animate-fade p-10
+          className='relative w-4/5 md:w-1/2 animate-fade p-10
         flex flex-col items-center gap-4 rounded-md bg-transparent'
         >
           <h3 className='self-center text-xl text-center font-bold'>
-            El servidor se está activando, por favor espera un momento...
+            🚀 El backend está despertando...
+            <span className='text-left font-normal block'>
+              (No tengo plan pago 😅, puede tardar un par de minutos)
+            </span>
           </h3>
-          <div className='w-[20%]'>
+          <div className='w-[10%]'>
             <Loader />
           </div>
         </dialog>
