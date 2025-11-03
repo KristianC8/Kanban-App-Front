@@ -80,7 +80,7 @@ export const UpdateTask = ({ id, title, description, state, priority }) => {
           Titulo:
         </label>
         <input
-          className='text-[#c1c1c1] px-2 py-1 bg-[#212121] outline-none border-b border-[#303030] focus:border-[var(--principal-color)]'
+          className='text-[var(--input-text)] px-2 py-1 bg-[var(--popup-color)] outline-none border-b border-[#303030] focus:border-[var(--principal-color)]'
           placeholder='Cual es tu tarea?'
           id='titleTask'
           name='titulo'
@@ -101,7 +101,7 @@ export const UpdateTask = ({ id, title, description, state, priority }) => {
           Descripción:
         </label>
         <textarea
-          className='text-[#c1c1c1]  px-2 py-1 bg-[#212121] outline-none border-b border-[#303030] focus:border-[var(--principal-color)] resize-none'
+          className='text-[var(--input-text)]  px-2 py-1 bg-[var(--popup-color)] outline-none border-b border-[#303030] focus:border-[var(--principal-color)] resize-none'
           name='descripcion'
           id='descriptionTask'
           placeholder='Describe tu tarea con más detalle'
@@ -122,7 +122,7 @@ export const UpdateTask = ({ id, title, description, state, priority }) => {
             Estado:
           </label>
           <select
-            className='text-[#c1c1c1] px-2 py-1 bg-[#212121] outline-none border-b border-[#303030] focus:border-[var(--principal-color)]'
+            className='text-[var(--input-text)] px-2 py-1 bg-[var(--popup-color)] outline-none border-b border-[#303030] focus:border-[var(--principal-color)]'
             name='estado'
             id='stateTask'
             onChange={onInputChange}
@@ -154,7 +154,7 @@ export const UpdateTask = ({ id, title, description, state, priority }) => {
             Prioridad:
           </label>
           <select
-            className='text-[#c1c1c1]  px-2 py-1 bg-[#212121] outline-none border-b border-[#303030] focus:border-[var(--principal-color)]'
+            className='text-[var(--input-text)]  px-2 py-1 bg-[var(--popup-color)] outline-none border-b border-[#303030] focus:border-[var(--principal-color)]'
             name='prioridad'
             id='priorityTask'
             onChange={onInputChange}
@@ -172,7 +172,7 @@ export const UpdateTask = ({ id, title, description, state, priority }) => {
           Fecha estimada:
         </label>
         <input
-          className='text-[#c1c1c1] px-2 py-1 bg-[#212121] outline-none border-b border-[#303030] focus:border-[var(--principal-color)]'
+          className='text-[var(--input-text)] px-2 py-1 bg-[var(--popup-color)] outline-none border-b border-[#303030] focus:border-[var(--principal-color)]'
           type='date'
           name='fechaPendiente'
           id='dateTask'
@@ -184,8 +184,8 @@ export const UpdateTask = ({ id, title, description, state, priority }) => {
         />
       </div>
       <div>
-        <span className='text-sm translate-y-2 text-[#A2A2A2]'>Proyecto: </span>
-        <span className=' text-[.75rem] text-[#A2A2A2]'>
+        <span className='text-sm translate-y-2 '>Proyecto: </span>
+        <span className=' text-[.75rem] text-[var(--input-text)]'>
           {project.nombreProyecto.toUpperCase()}
         </span>
       </div>
