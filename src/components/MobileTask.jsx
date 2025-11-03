@@ -23,23 +23,27 @@ export const MobileTask = ({ title, description, state, priority, date }) => {
       >
         <dialog
           className='relative w-4/5 md:w-96 animate-fade p-10 shadow-lg
-        flex flex-col gap-4 rounded-md bg-[#212121] z-30'
+        flex flex-col gap-4 rounded-md bg-[var(--popup-color) z-30'
         >
           <h3 className='self-center text-[var(--principal-color)] text-xl font-bold'>
             {title}
           </h3>
           <div>
-            <span className='text-sm translate-y-3 text-stone-400'>
+            <span className='text-sm translate-y-3 text-[var(--accent-color)] font-bold'>
               Descripción:
             </span>
             <p className='text-pretty'>{description}</p>
           </div>
           <div>
-            <span className='text-sm text-stone-400'>Estado: </span>
+            <span className='text-sm text-[var(--accent-color)] font-bold'>
+              Estado:{' '}
+            </span>
             <span>{`${state === 'todo' ? 'Por Hacer' : state === 'inProgress' ? 'En Curso' : 'Terminado'}`}</span>
           </div>
           <div>
-            <span className='text-sm text-stone-400'>Prioridad: </span>
+            <span className='text-sm text-[var(--accent-color)] font-bold'>
+              Prioridad:{' '}
+            </span>
             <div className='inline-flex gap-1 items-center'>
               <span>{`${priority === 'high' ? 'Alta' : priority === 'medium' ? 'Media' : 'Baja'}`}</span>{' '}
               <div
@@ -54,7 +58,9 @@ export const MobileTask = ({ title, description, state, priority, date }) => {
             </div>
           </div>
           <div>
-            <span className='text-sm text-stone-400'>Fecha: </span>
+            <span className='text-sm text-[var(--accent-color)] font-bold'>
+              Fecha:{' '}
+            </span>
             <span>{date}</span>
           </div>
           <button onClick={handleClick} className='absolute top-4 right-4'>
