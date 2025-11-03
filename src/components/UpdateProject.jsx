@@ -67,7 +67,7 @@ export const UpdateProject = ({ title, description, id }) => {
           Nombre del Proyecto:
         </label>
         <input
-          className='text-[#c1c1c1]  px-2 py-1 bg-[#212121] outline-none border-b border-[#303030] focus:border-[var(--principal-color)]'
+          className='text-[var(--input-text)]  px-2 py-1 bg-[var(--popup-color)] outline-none border-b border-[#303030] focus:border-[var(--principal-color)]'
           type='text'
           name='nombreProyecto'
           id='nombreProyecto'
@@ -87,7 +87,7 @@ export const UpdateProject = ({ title, description, id }) => {
           Descripción:
         </label>
         <textarea
-          className='text-[#c1c1c1]  px-2 py-1 bg-[#212121] outline-none border-b border-[#303030] focus:border-[var(--principal-color)] resize-none'
+          className='text-[var(--input-text)]  px-2 py-1 bg-[var(--popup-color)] outline-none border-b border-[#303030] focus:border-[var(--principal-color)] resize-none'
           name='descripciónProyecto'
           id='descripciónProyecto'
           value={descripciónProyecto}
