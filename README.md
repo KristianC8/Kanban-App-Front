@@ -308,4 +308,4 @@ Si tienes preguntas o sugerencias, no dudes en:
 
 ---
 
-**Desarrollado con ❤️ usando React y JavaScript**
+**Desarrollado por Kristian Cifuentes usando React y JavaScript**
