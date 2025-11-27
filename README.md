@@ -292,20 +292,4 @@ Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](./LICENS
 
 ---
 
-## 🙏 Agradecimientos
-
-- [React](https://react.dev/) - Por la increíble biblioteca de UI
-- [Vite](https://vitejs.dev/) - Por el rápido build tool
-- [Tailwind CSS](https://tailwindcss.com/) - Por el framework de CSS
-- [Zustand](https://zustand-demo.pmnd.rs/) - Por la gestión de estado simple y efectiva
-
-## 📞 Contacto
-
-Si tienes preguntas o sugerencias, no dudes en:
-
-- Abrir un [Issue](https://github.com/TU_USUARIO/kanban-app-front/issues)
-- Crear un [Pull Request](https://github.com/TU_USUARIO/kanban-app-front/pulls)
-
----
-
 **Desarrollado por Kristian Cifuentes usando React y JavaScript**
