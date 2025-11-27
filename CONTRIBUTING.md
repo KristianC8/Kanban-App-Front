@@ -478,10 +478,6 @@ Si tienes preguntas o necesitas ayuda:
 - Crea un nuevo issue con la etiqueta `question`
 - Contacta a los mantenedores
 
-## Reconocimientos
-
-Todos los contribuidores serán reconocidos en el proyecto. ¡Gracias por tu tiempo y esfuerzo!
-
 ---
 
 **¡Gracias por contribuir al Kanban App! 🎉**
