@@ -807,9 +807,9 @@ useEffect(() => {
 }, [])
 ```
 
-## Recursos Adicionales
+<!-- ## Recursos Adicionales
 
 - [Fetch API - MDN](https://developer.mozilla.org/es/docs/Web/API/Fetch_API)
 - [Documentación de Spring Boot](https://spring.io/projects/spring-boot)
 - [REST API Best Practices](https://restfulapi.net/)
-- [AbortController - MDN](https://developer.mozilla.org/es/docs/Web/API/AbortController)
+- [AbortController - MDN](https://developer.mozilla.org/es/docs/Web/API/AbortController) -->
